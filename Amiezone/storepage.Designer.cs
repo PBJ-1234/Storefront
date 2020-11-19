@@ -45,9 +45,9 @@
             // 
             // itemPicture
             // 
-            this.itemPicture.Location = new System.Drawing.Point(89, 171);
+            this.itemPicture.Location = new System.Drawing.Point(62, 146);
             this.itemPicture.Name = "itemPicture";
-            this.itemPicture.Size = new System.Drawing.Size(111, 165);
+            this.itemPicture.Size = new System.Drawing.Size(107, 212);
             this.itemPicture.TabIndex = 3;
             this.itemPicture.TabStop = false;
             // 
@@ -82,9 +82,9 @@
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Location = new System.Drawing.Point(61, 146);
+            this.descriptionBox.Location = new System.Drawing.Point(206, 146);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(326, 212);
+            this.descriptionBox.Size = new System.Drawing.Size(181, 212);
             this.descriptionBox.TabIndex = 7;
             this.descriptionBox.Text = "";
             // 

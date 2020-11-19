@@ -24,7 +24,7 @@ namespace Amiezone
             DateTime date = new DateTime();
             long n = long.Parse(date.ToString("yyyyMMddHHmmss"));
             string user = UsernameBox.Text, pass = PasswordBox.Text;
-            string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            string projectPath = storeClasses.generalFilePath;
             projectPath = Path.Combine(projectPath, "Users");
             foreach (string itemFile in Directory.EnumerateFiles(projectPath))
             {

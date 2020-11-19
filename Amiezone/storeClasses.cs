@@ -8,51 +8,15 @@ using System.Windows.Forms;
 
 namespace Amiezone
 {
-    class storeClasses
+    // Will need to adjust privacy of classes later
+    public class storeClasses
     {
-        //Really need a static file getter
-
+        //Links to Project\Amiezone\Amiezone
+        public static string generalFilePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
         public static string getPath(string folder, string file)
         {
             string path = "sdf";
             return path;
-        }
-        // Payment methods
-        public abstract class payment
-        {
-            public double amount;
-        }
-        public class wallet : payment
-        {
-            public double useCash()
-            {
-                throw new NotImplementedException();
-            }
-        }
-        public class card : payment
-        {
-            public int number;
-            public int type;
-            public DateTime expDate;
-
-            public Boolean authorized()
-            {
-                return true;
-            }
-        }
-        public class cash : payment
-        {
-            public double cashTendered;
-        }
-        public class bank : payment
-        {
-            public string name;
-            public long bankID;
-
-            public Boolean authorized()
-            {
-                throw new NotImplementedException();
-            }
         }
 
         // User and Cart
@@ -65,17 +29,21 @@ namespace Amiezone
             public string address;
             public string password;
 
-            public void addFunds()
+            public void modifyFunds(double funds)
             {
-
+                wallet = wallet + funds;
             }
             public void modifyAccountInfo()
             {
+                string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
+                //open up box or form to change file
 
             }
             private void viewAccountInfo()
             {
-
+                string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
+                string[] info = System.IO.File.ReadAllLines(userPath);
+                //return the file
             }
 
         }
@@ -102,25 +70,31 @@ namespace Amiezone
         public class item
         {
             public int productID;
+            public string name;
             public double cost;
             public string description;
 
             public item()
             {
-
             }
 
             public static item GetItem(int id, string store)
             {
-                string filePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-                filePath = Path.Combine(filePath, "Stores", store, id.ToString());
-                // Read file
-                item result = new item();
+                string filePath = Path.Combine(generalFilePath, "Stores", store, id.ToString());
                 string[] info = System.IO.File.ReadAllLines(filePath);
-                result.productID = int.Parse(info[0]);
-                result.cost = double.Parse(info[1]);
-                result.description = info[2];
+
+                item result = new item();
+                int.TryParse(info[0], out result.productID);
+                result.name = info[1];
+                double.TryParse(info[2], out result.cost);
+                result.description = info[3];
+
                 return result;
+            }
+            public string GetItemPic(string filePath)
+            {
+                string imagePath = filePath + ".png";
+                return imagePath;
             }
         }
         public class store
@@ -129,22 +103,34 @@ namespace Amiezone
             public string category;
             public string storeName;
 
-            public void addItems()
+            public store()
             {
-                /// asdfsadfsdfasdf
-                string filePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-                filePath = Path.Combine(filePath, "Stores");
-                foreach(File filename in filePath)
-                {
-
-                }
             }
+
+            // Updates/checks the list than returns the list
+            public List<item> getItems()
+            {
+                int currentIndex = 0;
+                string filePath = Path.Combine(generalFilePath, "Stores", storeName);
+                foreach(string fileName in Directory.EnumerateFiles(filePath))
+                {
+                    string[] info = System.IO.File.ReadAllLines(fileName);
+                    itemsAvailable[currentIndex].name = info[0];
+                    double.TryParse(info[1], out itemsAvailable[currentIndex].cost);
+                    itemsAvailable[currentIndex].description = info[2];
+                }
+                return itemsAvailable;
+            }
+
 
         }
         public class Storefront
         {
             List<store> storelist;
 
+            public Storefront()
+            {
+            }
             public List<store> listStores()
             {
                 return storelist;

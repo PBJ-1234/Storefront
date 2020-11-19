@@ -15,7 +15,6 @@ namespace Amiezone
     {
         public login()
         {
-
             InitializeComponent();
         }
 
@@ -24,7 +23,7 @@ namespace Amiezone
             bool exists = false;
             storeClasses.User currentUser = new storeClasses.User();
             string user = UsernameBox.Text, pass = PasswordBox.Text;
-            string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            string projectPath = storeClasses.generalFilePath;
             projectPath = Path.Combine(projectPath, "Users");
             foreach (string itemFile in Directory.EnumerateFiles(projectPath))
             {
@@ -57,21 +56,23 @@ namespace Amiezone
                 MessageBox.Show("User does not exist, please retry login.");
                 return;
             }
-            this.Hide();
-            // Will have to figure out how to transfer/ make constructor of form class
-            storepage store = new storepage(currentUser.name, currentUser.address, currentUser.ID,
-                currentUser.wallet);
+            this.Close();
+            storepage store = new storepage(currentUser);
             store.Show();
+            // Will have to figure out how to transfer/ make constructor of form class
+            /*
+             storepage store = new storepage(currentUser.name, currentUser.address, currentUser.ID,
+                currentUser.wallet);
+            */
             //modal shows one of those popup boxes like for whitelisting a site on adblock
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
             Register regPage = new Register();
-            //Hides login
+            //closes login
             this.Close();
             regPage.Show();
         }
     }
-    //When accessing files get into Directory.getCurrentDirectory
 }
