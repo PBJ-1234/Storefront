@@ -13,8 +13,10 @@ namespace Amiezone
 {
     public partial class Register : Form
     {
-        public Register()
+        login loginPage;
+        public Register(login prevPage)
         {
+            loginPage = prevPage;
             InitializeComponent();
         }
 
@@ -22,8 +24,9 @@ namespace Amiezone
         {
             //For id just use date and convert to int or long
             DateTime date = new DateTime();
-            long n = long.Parse(date.ToString("yyyyMMddHHmmss"));
-            string user = UsernameBox.Text, pass = PasswordBox.Text;
+            long n = date.Ticks;
+            string user = UsernameBox.Text + ".txt";
+            string pass = PasswordBox.Text;
             string projectPath = storeClasses.generalFilePath;
             projectPath = Path.Combine(projectPath, "Users");
             foreach (string itemFile in Directory.EnumerateFiles(projectPath))
@@ -34,10 +37,24 @@ namespace Amiezone
                     return;
                 }
             }
+            // Create a file to write to.
+
             string path = Path.Combine(projectPath, user);
-            string funds = FundsBox.Text, address = AddressBox.Text;
+            string funds = FundsBox.Text;
+            string address = AddressBox.Text;
             string[] data = { pass, n.ToString(), funds, address };
+            string x = pass + n.ToString() + funds + address;
+            /*using (StreamWriter sw = File.CreateText(path))
+            {
+                    sw.WriteLine(pass);
+                    sw.WriteLine(n);
+                    sw.WriteLine(funds);
+                    sw.WriteLine(address);
+            }
+            */
             System.IO.File.WriteAllLines(path, data);
+            loginPage.Enabled = true;
+            this.Close();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Amiezone
     {
         // True: item being made
         // False: store being made
-        Boolean itemOrStore;
+        private Boolean itemOrStore;
         storepage prev;
         public makeItems(storepage restore)
         {
@@ -52,7 +52,7 @@ namespace Amiezone
         }
         public Boolean checkInputs()
         {
-            //
+            
             if(itemOrStore == true)
             {
                 //Check if store exists
@@ -126,7 +126,9 @@ namespace Amiezone
                 //Create store die
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 Directory.CreateDirectory(filePath);
-                //Creates txt with filename of category
+                //Creates bin/ini/file with filename of category
+                filePath = Path.Combine(filePath, "Category");
+                Directory.CreateDirectory(filePath);
                 System.IO.File.WriteAllText(filePath, category.Text);
 
             }
@@ -137,9 +139,7 @@ namespace Amiezone
             prev.Show();
             //renables last form
             prev.Enabled = true;
-            // resort the storefronts items through here
-            // TO DO:
-            //
+            prev.loadStores();
 
         }
 

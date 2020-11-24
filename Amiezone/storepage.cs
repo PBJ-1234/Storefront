@@ -13,47 +13,41 @@ namespace Amiezone
 {
     public partial class storepage : Form
     {
-        // Work on passing in the user into the form constructor
-        // rather than just mashing it in there piece by piece
-        storeClasses.User currentUser;
-        storeClasses.ShoppingCart currentCart;
-        storeClasses.store currentStore;
-        
-        /* older version for testing later
-        public storepage(string uName, string uAdd, int uID, double uWallet)
-        {
-            currentUser.name = uName;
-            currentUser.address = uAdd;
-            currentUser.ID = uID;
-            currentUser.wallet = uWallet;
-            userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", uName, uAdd, uWallet);
-            InitializeComponent();
-        } 
-        */
-        public storepage(storeClasses.User newUser)
+
+        User currentUser;
+        ShoppingCart currentCart;
+        // CurrentStores likely unnecessary
+        Storefront currentStores;
+        public storepage(User newUser)
         {
             currentUser = newUser;
             userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", currentUser.name, currentUser.address, currentUser.wallet);
+            loadStores();
             InitializeComponent();
         }
-        /* older version for testing later
-        public storepage(string uName, string uAdd, int uID, double uWallet, storeClasses.ShoppingCart cart)
-        {
-            currentUser.name = uName;
-            currentUser.address = uAdd;
-            currentUser.ID = uID;
-            currentUser.wallet = uWallet;
-            userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", uName, uAdd, uWallet);
-            InitializeComponent();
-        }
-        */
-        public storepage(storeClasses.User newUser, storeClasses.ShoppingCart cart)
+
+        public storepage(User newUser, ShoppingCart cart)
         {
             currentUser = newUser;
+            currentCart = cart;
             userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", currentUser.name, currentUser.address, currentUser.wallet);
+            loadStores();
             InitializeComponent();
         }
-        //The shit below is for figuring out how to set pictures during run time
+        //loads in stores from store folder
+        public void loadStores()
+        {
+            StoreBox.Items.Clear();
+            string filePath = Path.Combine(storeClasses.generalFilePath, "Stores");
+            string[] directories = Directory.GetDirectories(filePath);
+            currentStores.storelist = currentStores.rebuildStores();
+            foreach (string x in directories)
+            {
+                StoreBox.Items.Add(x);
+            }
+        }
+
+        // Loads a pic into the box when selecting a new item
         private void LoadNewPict(PictureBox pic, string filename)
         {
             
@@ -72,6 +66,7 @@ namespace Amiezone
             }
         }
 
+        // Loads in the selected item from the list into the description
         private void ItemBox_MouseClick(object sender, MouseEventArgs e)
         {
             // When user clicks will read file associated with item
@@ -82,14 +77,10 @@ namespace Amiezone
              * Item Desc
             */
             // File picture will be same name but with the extension difference
-            // TO DO: add sample/default picture if no picture
             
-            // Make generic method for four lines
-            // Included in item mouse and order mouse
             descriptionBox.Text = ItemBox.SelectedItem.ToString();
             string x = ItemBox.SelectedItem.ToString();
-            int y = int.Parse(x);
-            storeClasses.item addedItem = storeClasses.item.GetItem(y, storeLabel.Text);
+            item addedItem = item.GetItem(x, storeLabel.Text);
 
             descriptionBox.Text = addedItem.name + " ";
             descriptionBox.Text += String.Format("({0})\n", addedItem.productID);
@@ -99,17 +90,12 @@ namespace Amiezone
 
             string imagePath = addedItem.name + ".jpg";
             LoadNewPict(itemPicture, imagePath);
-
-            // This clears the memory of the image so that there isn't some mem leak or sometin
-            //itemPicture.Image.Dispose();
-
         }
-
+        // Functions to get the store through load
         private void loadButton_MouseClick(object sender, MouseEventArgs e)
         {
-            /*
-             * https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog?view=netcore-3.1
-             */
+            
+            // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog?view=netcore-3.1
             var content = string.Empty;
             var path = string.Empty;
 
@@ -138,20 +124,6 @@ namespace Amiezone
 
         private void createButton_MouseClick(object sender, MouseEventArgs e)
         {
-            // Potentially open up a new window/form for it or create a panel
-            // Potentially split into two opitions when clicked, IE make store or make item
-            /*
-             * Structure:
-             * New Store Name:
-             * Store Category:
-             * 
-             * Structure:
-             * Item ID:
-             * 
-             * 
-            */
-            // Make constructor to get previous storefront form 
-            // or make special page for easy go back page
             makeItems createForm = new makeItems(this);
             createForm.Show();
             // Make sure to reenable in makeItems close
@@ -160,12 +132,9 @@ namespace Amiezone
 
         private void orderButton_MouseClick(object sender, MouseEventArgs e)
         {
-            // Make generic method for four lines
-            // I
             string x = ItemBox.SelectedItem.ToString();
-            int y = int.Parse(x);
-            storeClasses.item addedItem = storeClasses.item.GetItem(y,storeLabel.Text);
-            currentCart.itemIDsInCart.Add(addedItem);
+            item addedItem = item.GetItem(x,storeLabel.Text);
+            currentCart.itemsInCart.Add(addedItem);
             double cost = double.Parse(totalSoFarLabel.Text) + addedItem.cost;
             totalSoFarLabel.Text = cost.ToString();
         }

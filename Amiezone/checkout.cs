@@ -12,23 +12,27 @@ namespace Amiezone
 {
     public partial class checkout : Form
     {
-        storeClasses.User user;
-        storeClasses.ShoppingCart currentCart;
+        User user;
+        ShoppingCart currentCart;
         
-        //Again figure out problems with addressing or just pass the list of the cart
-        public checkout(string name, string address, int ID, double wallet, storeClasses.ShoppingCart cartie)
+        public checkout(string name, string address, int ID, double wallet, ShoppingCart cartie)
         {
             user.name = name;
             user.address = address;
             user.ID = ID;
             user.wallet = wallet;
             currentCart = cartie;
+            foreach(item x in currentCart.itemsInCart)
+            {
+                finalItemList.Items.Add(x);
+            }
             InitializeComponent();
         }
-        public checkout(storeClasses.User newUser, storeClasses.ShoppingCart cart)
+        public checkout(User newUser, ShoppingCart cart)
         {
             user = newUser;
             currentCart = cart;
+            InitializeComponent();
         }
 
         // Payment methods
@@ -75,6 +79,14 @@ namespace Amiezone
             }
         }
 
+        // Hides checkout buttons so user can't double click or accidentally make more orders
+        private void finishOrder()
+        {
+            BankCheck.Hide();
+            CreditButton.Hide();
+            WalletButton.Hide();
+            label1.Show();
+        }
         public class bank : payment
         {
             public string name;
@@ -99,23 +111,25 @@ namespace Amiezone
             //Going to need to create the file for the recipet
             string filePath = storeClasses.generalFilePath;
             filePath = Path.Combine(filePath, "ReportsNReciepts", DateTime.Now.ToString());
-
-            //Creates file
-            StreamWriter create = File.CreateText(filePath);
-            create.WriteLine(DateTime.Now.ToString());
+            if(File.Exists(filePath) != true)
+            {
+                //Creates file
+                StreamWriter create = File.CreateText(filePath);
+                create.WriteLine(DateTime.Now.ToString());
+            }
 
             //Writes to file
             int index = 0;
             StreamWriter sw = File.AppendText(filePath);
-            while (index <= currentCart.itemIDsInCart.Count())
+            while (index <= currentCart.itemsInCart.Count())
             {
-                string[] text;
+                //string[] text;
                 //text[0] = currentCart.itemIDsInCart[index].productID.ToString());
 
-                sw.WriteLine(currentCart.itemIDsInCart[index].productID.ToString());
-                sw.WriteLine(currentCart.itemIDsInCart[index].name);
-                sw.WriteLine(currentCart.itemIDsInCart[index].cost.ToString());
-                sw.WriteLine(currentCart.itemIDsInCart[index].description);
+                sw.WriteLine(currentCart.itemsInCart[index].productID.ToString());
+                sw.WriteLine(currentCart.itemsInCart[index].name);
+                sw.WriteLine(currentCart.itemsInCart[index].cost.ToString());
+                sw.WriteLine(currentCart.itemsInCart[index].description);
                 index++;
             }
         }
@@ -124,6 +138,7 @@ namespace Amiezone
         {
             user.wallet = user.wallet - (Convert.ToDouble(cost.Text));
             printReciept();
+            finishOrder();
         }
 
         private void returnButton_MouseClick(object sender, MouseEventArgs e)

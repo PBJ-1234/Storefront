@@ -21,21 +21,18 @@ namespace Amiezone
         private void loginButton_Click(object sender, EventArgs e)
         {
             bool exists = false;
-            storeClasses.User currentUser = new storeClasses.User();
-            string user = UsernameBox.Text, pass = PasswordBox.Text;
+            User currentUser = new User();
+            string user = UsernameBox.Text + ".txt";
+            string pass = PasswordBox.Text;
+
             string projectPath = storeClasses.generalFilePath;
             projectPath = Path.Combine(projectPath, "Users");
+
             foreach (string itemFile in Directory.EnumerateFiles(projectPath))
             {
                 if(itemFile == user)
                 {
-                    //Setup:
-                    /* 
-                     * Password
-                     * ID
-                     * Wallet/Cash
-                     * Address
-                    */
+                    exists = true;
                     string[] info = System.IO.File.ReadAllLines(itemFile);
                     if(info[0] == pass)
                     {
@@ -59,20 +56,15 @@ namespace Amiezone
             this.Close();
             storepage store = new storepage(currentUser);
             store.Show();
-            // Will have to figure out how to transfer/ make constructor of form class
-            /*
-             storepage store = new storepage(currentUser.name, currentUser.address, currentUser.ID,
-                currentUser.wallet);
-            */
             //modal shows one of those popup boxes like for whitelisting a site on adblock
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            Register regPage = new Register();
+            Register regPage = new Register(this);
             //closes login
-            this.Close();
             regPage.Show();
+            this.Enabled = false;
         }
     }
 }
