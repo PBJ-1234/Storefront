@@ -157,6 +157,8 @@ namespace Amiezone
                     store newStore = new store();
                     newStore.storeName = x;
 
+                    //May need to fix up problems with finding and reading file
+                    //might just read file for the category, seems inefficient
                     string[] catFile = Directory.GetFiles(filePath);
                     newStore.category = catFile[0];
                     storelist.Add(newStore);

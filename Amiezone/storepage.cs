@@ -20,27 +20,32 @@ namespace Amiezone
         Storefront currentStores;
         public storepage(User newUser)
         {
-            currentUser = newUser;
-            userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", currentUser.name, currentUser.address, currentUser.wallet);
-            loadStores();
             InitializeComponent();
+            userInfoBox.Text = "asdf";
+            currentUser = newUser;
+            userInfoBox.Text = String.Format("User: {0}\n", currentUser.name);
+            userInfoBox.Text += String.Format("Address: {0}\n", currentUser.address);
+            userInfoBox.Text += String.Format("Funds: {0}\n", currentUser.wallet);
+            loadStores();
         }
 
         public storepage(User newUser, ShoppingCart cart)
         {
+            InitializeComponent();
             currentUser = newUser;
             currentCart = cart;
             userInfoBox.Text = String.Format("User: {0}\nAddress: {1}\nFunds{2}", currentUser.name, currentUser.address, currentUser.wallet);
             loadStores();
-            InitializeComponent();
         }
         //loads in stores from store folder
         public void loadStores()
         {
+            Storefront newFront = new Storefront();
             StoreBox.Items.Clear();
             string filePath = Path.Combine(storeClasses.generalFilePath, "Stores");
             string[] directories = Directory.GetDirectories(filePath);
-            currentStores.storelist = currentStores.rebuildStores();
+            newFront.storelist = newFront.rebuildStores();
+            currentStores = newFront;
             foreach (string x in directories)
             {
                 StoreBox.Items.Add(x);

@@ -37,6 +37,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.RegisterButton = new System.Windows.Forms.Button();
+            this.ReturnButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // UsernameBox
@@ -113,11 +114,22 @@
             this.RegisterButton.UseVisualStyleBackColor = true;
             this.RegisterButton.Click += new System.EventHandler(this.button1_Click);
             // 
+            // ReturnButton
+            // 
+            this.ReturnButton.Location = new System.Drawing.Point(283, 315);
+            this.ReturnButton.Name = "ReturnButton";
+            this.ReturnButton.Size = new System.Drawing.Size(139, 23);
+            this.ReturnButton.TabIndex = 9;
+            this.ReturnButton.Text = "Return";
+            this.ReturnButton.UseVisualStyleBackColor = true;
+            this.ReturnButton.Click += new System.EventHandler(this.exitRegister);
+            // 
             // Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ReturnButton);
             this.Controls.Add(this.RegisterButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -145,5 +157,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button RegisterButton;
+        private System.Windows.Forms.Button ReturnButton;
     }
 }

@@ -22,7 +22,7 @@ namespace Amiezone
         {
             bool exists = false;
             User currentUser = new User();
-            string user = UsernameBox.Text + ".txt";
+            string user = Path.Combine(storeClasses.generalFilePath, "Users", UsernameBox.Text + ".txt");
             string pass = PasswordBox.Text;
 
             string projectPath = storeClasses.generalFilePath;
@@ -36,6 +36,7 @@ namespace Amiezone
                     string[] info = System.IO.File.ReadAllLines(itemFile);
                     if(info[0] == pass)
                     {
+                        currentUser.name = UsernameBox.Text;
                         currentUser.password = info[0];
                         currentUser.ID = int.Parse(info[1]);
                         currentUser.wallet = double.Parse(info[2]);
@@ -56,7 +57,6 @@ namespace Amiezone
             this.Close();
             storepage store = new storepage(currentUser);
             store.Show();
-            //modal shows one of those popup boxes like for whitelisting a site on adblock
         }
 
         private void registerButton_Click(object sender, EventArgs e)
