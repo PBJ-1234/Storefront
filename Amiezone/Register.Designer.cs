@@ -112,7 +112,7 @@
             this.RegisterButton.TabIndex = 8;
             this.RegisterButton.Text = "Register";
             this.RegisterButton.UseVisualStyleBackColor = true;
-            this.RegisterButton.Click += new System.EventHandler(this.button1_Click);
+            this.RegisterButton.Click += new System.EventHandler(this.registerButton);
             // 
             // ReturnButton
             // 

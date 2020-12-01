@@ -53,6 +53,7 @@ namespace Amiezone
         */
         public class check : payment
         {
+            // Either put in checkout or in user info
             private int routingNumber, accountNumber;
             public int RoutingNumber
             {

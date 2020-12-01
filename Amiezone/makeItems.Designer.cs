@@ -81,7 +81,7 @@
             this.storeButton.TabIndex = 7;
             this.storeButton.Text = "Make Store";
             this.storeButton.UseVisualStyleBackColor = true;
-            this.storeButton.Click += new System.EventHandler(this.button1_Click);
+            this.storeButton.Click += new System.EventHandler(this.CreateStore);
             // 
             // itemButton
             // 
@@ -91,7 +91,7 @@
             this.itemButton.TabIndex = 8;
             this.itemButton.Text = "Make Item";
             this.itemButton.UseVisualStyleBackColor = true;
-            this.itemButton.Click += new System.EventHandler(this.button2_Click);
+            this.itemButton.Click += new System.EventHandler(this.CreateItem);
             // 
             // createButton
             // 

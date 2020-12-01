@@ -40,51 +40,51 @@
             this.totalSoFarLabel = new System.Windows.Forms.Label();
             this.orderButton = new System.Windows.Forms.Button();
             this.checkoutButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.itemPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // itemPicture
             // 
-            this.itemPicture.Location = new System.Drawing.Point(62, 146);
+            this.itemPicture.Location = new System.Drawing.Point(232, 141);
             this.itemPicture.Name = "itemPicture";
-            this.itemPicture.Size = new System.Drawing.Size(107, 212);
+            this.itemPicture.Size = new System.Drawing.Size(226, 164);
             this.itemPicture.TabIndex = 3;
             this.itemPicture.TabStop = false;
             // 
             // ItemBox
             // 
             this.ItemBox.FormattingEnabled = true;
-            this.ItemBox.Items.AddRange(new object[] {
-            "thing one",
-            "thing two",
-            "gointo data items to edit"});
             this.ItemBox.Location = new System.Drawing.Point(469, 146);
             this.ItemBox.Name = "ItemBox";
             this.ItemBox.Size = new System.Drawing.Size(258, 212);
             this.ItemBox.TabIndex = 4;
-            this.ItemBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ItemBox_MouseClick);
+            this.ItemBox.SelectedIndexChanged += new System.EventHandler(this.ItemBox_MouseClick);
             // 
             // StoreBox
             // 
             this.StoreBox.FormattingEnabled = true;
-            this.StoreBox.Location = new System.Drawing.Point(469, 96);
+            this.StoreBox.Location = new System.Drawing.Point(469, 47);
             this.StoreBox.Name = "StoreBox";
-            this.StoreBox.Size = new System.Drawing.Size(258, 17);
+            this.StoreBox.Size = new System.Drawing.Size(258, 43);
             this.StoreBox.TabIndex = 5;
+            this.StoreBox.SelectedIndexChanged += new System.EventHandler(this.StoreBox_SelectedIndexChanged);
             // 
             // CategoryBox
             // 
             this.CategoryBox.FormattingEnabled = true;
-            this.CategoryBox.Location = new System.Drawing.Point(469, 47);
+            this.CategoryBox.Location = new System.Drawing.Point(469, 96);
             this.CategoryBox.Name = "CategoryBox";
-            this.CategoryBox.Size = new System.Drawing.Size(258, 43);
+            this.CategoryBox.Size = new System.Drawing.Size(258, 17);
             this.CategoryBox.TabIndex = 6;
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Location = new System.Drawing.Point(206, 146);
+            this.descriptionBox.Location = new System.Drawing.Point(232, 311);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(181, 212);
+            this.descriptionBox.ReadOnly = true;
+            this.descriptionBox.Size = new System.Drawing.Size(226, 105);
             this.descriptionBox.TabIndex = 7;
             this.descriptionBox.Text = "";
             // 
@@ -92,7 +92,7 @@
             // 
             this.userInfoBox.Location = new System.Drawing.Point(62, 27);
             this.userInfoBox.Name = "userInfoBox";
-            this.userInfoBox.Size = new System.Drawing.Size(154, 98);
+            this.userInfoBox.Size = new System.Drawing.Size(154, 113);
             this.userInfoBox.TabIndex = 8;
             this.userInfoBox.Text = "";
             // 
@@ -102,7 +102,7 @@
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(126, 23);
             this.createButton.TabIndex = 9;
-            this.createButton.Text = "Create Store";
+            this.createButton.Text = "Create Store/Item";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.createButton_MouseClick);
             // 
@@ -129,11 +129,11 @@
             // totalSoFarLabel
             // 
             this.totalSoFarLabel.AutoSize = true;
-            this.totalSoFarLabel.Location = new System.Drawing.Point(466, 428);
+            this.totalSoFarLabel.Location = new System.Drawing.Point(504, 427);
             this.totalSoFarLabel.Name = "totalSoFarLabel";
-            this.totalSoFarLabel.Size = new System.Drawing.Size(64, 13);
+            this.totalSoFarLabel.Size = new System.Drawing.Size(28, 13);
             this.totalSoFarLabel.TabIndex = 12;
-            this.totalSoFarLabel.Text = "Total: $0.00";
+            this.totalSoFarLabel.Text = "0.00";
             // 
             // orderButton
             // 
@@ -155,14 +155,33 @@
             this.checkoutButton.UseVisualStyleBackColor = true;
             this.checkoutButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.checkoutButton_MouseClick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(466, 427);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Total: $";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(232, 27);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(226, 108);
+            this.listBox1.TabIndex = 16;
+            // 
             // storepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(823, 450);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.totalSoFarLabel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.checkoutButton);
             this.Controls.Add(this.orderButton);
-            this.Controls.Add(this.totalSoFarLabel);
             this.Controls.Add(this.storeLabel);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.createButton);
@@ -194,5 +213,7 @@
         private System.Windows.Forms.Label totalSoFarLabel;
         private System.Windows.Forms.Button orderButton;
         private System.Windows.Forms.Button checkoutButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

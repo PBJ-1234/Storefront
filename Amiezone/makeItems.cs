@@ -29,10 +29,18 @@ namespace Amiezone
             itemStore.Show();
             itemName.Show();
             cost.Show();
-            description.Hide();
+            description.Show();
             createButton.Show();
             itemOrStore = true;
         }
+        public void itemHide()
+        {
+            itemStore.Hide();
+            itemName.Hide();
+            cost.Hide();
+            description.Hide();
+        }
+
         public void storeShow()
         {
             storeName.Show();
@@ -40,14 +48,16 @@ namespace Amiezone
             createButton.Show();
             itemOrStore = false;
         }
-        public void hideEverything()
+        public void storeHide()
         {
-            description.Hide();
             storeName.Hide();
             category.Hide();
-            itemStore.Hide();
-            itemName.Hide();
-            cost.Hide();
+        }
+
+        public void hideEverything()
+        {
+            itemHide();
+            storeHide();
             createButton.Hide();
         }
         public Boolean checkInputs()
@@ -59,12 +69,14 @@ namespace Amiezone
                 string itemPath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text);
                 if (Directory.Exists(itemPath) == false)
                 {
+                    MessageBox.Show("Store does not exist");
                     return false;
                 }
                 itemPath = Path.Combine(itemPath, itemName.Text);
                 //Check if item exists
-                if (File.Exists(itemPath) == false)
+                if (File.Exists(itemPath) == true)
                 {
+                    MessageBox.Show("Please do not reuse item names");
                     return false;
                 }
                 //Check if price is valid
@@ -72,19 +84,22 @@ namespace Amiezone
                 bool res = double.TryParse(this.cost.Text, out cost);
                 if (res == false)
                 {
+                    MessageBox.Show("Invalid Number");
                     return false;
                 }
                 //Check if desc is valid
                 if (description.Text == "")
                 {
+                    MessageBox.Show("Please Enter a description");
                     return false;
                 }
                 // Potentially put image load from browser or set default
+
                 return true;
             }
             else
             {
-                string storePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text);
+                string storePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 //Check if store exists and is valid
                 if (Directory.Exists(storePath) == true)
                 {
@@ -95,29 +110,32 @@ namespace Amiezone
                 {
                     return false;
                 }
-
+                
                 return true;
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void CreateStore(object sender, EventArgs e)
         {
             storeShow();
+            itemHide();
         }
-        private void button2_Click(object sender, EventArgs e)
+        private void CreateItem(object sender, EventArgs e)
         {
             itemShow();
+            storeHide();
         }       
         private void createButton_Click(object sender, EventArgs e)
         {
+
             if(itemOrStore == true && checkInputs() == true)
             {
                 //autogen product id based on date
                 //will need to convert ids and cut off bits and pieces of the long to convert to secs
+                //https://stackoverflow.com/questions/4873493/how-can-i-convert-number-of-seconds-since-1970-to-datetime-in-c
                 long unixSeconds = DateTimeOffset.Now.ToUnixTimeSeconds();
                 // Could also enumerate through files checking for the most recent and adding 1
-
-                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text);
-                string[] info = { unixSeconds.ToString(), itemName.Text, cost.Text, description.Text};
+                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text, itemName.Text) + ".txt";
+                string[] info = { unixSeconds.ToString(), itemName.Text, cost.Text, description.Text };
                 System.IO.File.WriteAllLines(filePath, info);
 
             }
@@ -126,21 +144,19 @@ namespace Amiezone
                 //Create store die
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 Directory.CreateDirectory(filePath);
-                //Creates bin/ini/file with filename of category
-                filePath = Path.Combine(filePath, "Category");
+                //Creates folder with name of category
+                filePath = Path.Combine(filePath, category.Text);
                 Directory.CreateDirectory(filePath);
-                System.IO.File.WriteAllText(filePath, category.Text);
-
             }
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Close();
             prev.Show();
             //renables last form
             prev.Enabled = true;
             prev.loadStores();
 
+            this.Close();
         }
 
     }

@@ -20,7 +20,7 @@ namespace Amiezone
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void registerButton(object sender, EventArgs e)
         {
             //Need to figure out how to get ticks in right
             Boolean exists = false;

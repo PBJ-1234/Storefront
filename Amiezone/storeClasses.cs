@@ -24,6 +24,7 @@ namespace Amiezone
     Clean, Maintanable Code
     SOLID Principles
     Automated Unit Testing
+    https://docs.microsoft.com/en-us/visualstudio/test/walkthrough-creating-and-running-unit-tests-for-managed-code?view=vs-2019
      */
 
     // Will need to adjust privacy of classes later
@@ -54,22 +55,23 @@ namespace Amiezone
             public void modifyAccountInfo()
             {
                 string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
+                //TO DO: Rework register page to allow for use or create another form entirely
                 //open up box or form to change file
 
             }
+            //return the file
             private void viewAccountInfo()
             {
                 string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
                 string[] info = System.IO.File.ReadAllLines(userPath);
-                MessageBox.Show(String.Format("Name: {0}\nCurrent Funds{1}\n", info[0], info[1], info[2], info[3], info[4]));
+                MessageBox.Show(String.Format( info[0] + info[1] + info[2] + info[3] + info[4]));
             }
-            //return the file
         }
 
     
         public class ShoppingCart
         {
-            public List<item> itemsInCart = new List<item>();
+            public List<item> itemsInCart = new List<item> { };
 
             public void removeItem(int productID)
             {
@@ -95,9 +97,9 @@ namespace Amiezone
             public string description;
             public string  itemFilePath;
 
-            public static item GetItem(string name, string store)
+            public static item GetItem(string store, string name)
             {
-                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", store, name);
+                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", store, name) + ".txt";
                 string[] info = System.IO.File.ReadAllLines(filePath);
 
                 item result = new item();
@@ -116,57 +118,57 @@ namespace Amiezone
         }
         public class store
         {
-            List<item> itemsAvailable;
+            List<item> itemsAvailable = new List<item>();
             public string category;
             public string storeName;
 
             // Updates/checks the list than returns the list
-            public List<item> getItems()
+            public void getItems()
             {
-                int currentIndex = 0;
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName);
                 string[] files = System.IO.Directory.GetFiles(filePath, "*.txt");
 
                 foreach(string file in files)
                 {
+                    item newItem = new item();
                     string[] info = System.IO.File.ReadAllLines(file);
-                    itemsAvailable[currentIndex].productID = long.Parse(info[0]);
-                    itemsAvailable[currentIndex].name = info[1];
-                    double.TryParse(info[2], out itemsAvailable[currentIndex].cost);
-                    itemsAvailable[currentIndex].description = info[3];
-                    currentIndex++;
+                    newItem.productID = long.Parse(info[0]);
+                    newItem.name = info[1];
+                    double.TryParse(info[2], out newItem.cost);
+                    newItem.description = info[3];
+
+                    itemsAvailable.Add(newItem);
                 }
 
-                return itemsAvailable;
             }
 
 
         }
         public class Storefront
         {
-            public List<store> storelist;
+            //Null referance fix with intialization or implementation as own class
+            public List<store> storelist = new List<store> { };
+
 
             //Potential problem with discovering filepathing
-            public List<store> rebuildStores()
+            public void rebuildStores()
             {
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores");
                 string[] directories = Directory.GetDirectories(filePath);
                 foreach (string x in directories)
                 {
-                    filePath = Path.Combine(filePath, x, "Category");
                     store newStore = new store();
-                    newStore.storeName = x;
+                    newStore.storeName = Path.GetFileName(x);
 
                     //May need to fix up problems with finding and reading file
                     //might just read file for the category, seems inefficient
-                    string[] catFile = Directory.GetFiles(filePath);
-                    newStore.category = catFile[0];
+                    string storePath = Path.Combine(filePath, x);
+                    string[] info = Directory.GetDirectories(storePath);
+                    newStore.category = Path.GetFileNameWithoutExtension(info[0]);
+
                     storelist.Add(newStore);
                 }
-
-                return storelist;
             }
-
         }
     
 }

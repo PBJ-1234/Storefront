@@ -54,7 +54,7 @@ namespace Amiezone
                 MessageBox.Show("User does not exist, please retry login.");
                 return;
             }
-            this.Close();
+            this.Hide();
             storepage store = new storepage(currentUser);
             store.Show();
         }
