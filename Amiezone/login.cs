@@ -62,7 +62,6 @@ namespace Amiezone
         private void registerButton_Click(object sender, EventArgs e)
         {
             Register regPage = new Register(this);
-            //closes login
             regPage.Show();
             this.Enabled = false;
         }

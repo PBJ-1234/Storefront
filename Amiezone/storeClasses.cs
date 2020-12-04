@@ -71,13 +71,13 @@ namespace Amiezone
     
         public class ShoppingCart
         {
-            public List<item> itemsInCart = new List<item> { };
+            public List<Item> itemsInCart = new List<Item>();
 
             public void removeItem(int productID)
             {
                 // May need to use int[][] 1st id: 2nd amount
                 // Though can just use item lsit
-                foreach(item curItem in itemsInCart)
+                foreach(Item curItem in itemsInCart)
                 {
                     if(curItem.productID == productID)
                     {
@@ -88,21 +88,29 @@ namespace Amiezone
         }
 
         // Stores and products
-        
-        public class item
+            /* File Structure:
+             * Item ID
+             * Item Name
+             * Item Cost
+             * Item Desc
+            */        
+        public class Item
         {
-            public long productID;
+
+        public long productID;
             public string name;
             public double cost;
             public string description;
-            public string  itemFilePath;
+            public string itemFilePath;
 
-            public static item GetItem(string store, string name)
+            public static Item GetItem(string store, string name)
             {
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", store, name) + ".txt";
+                
                 string[] info = System.IO.File.ReadAllLines(filePath);
 
-                item result = new item();
+                Item result = new Item();
+                result.itemFilePath = filePath;
                 long.TryParse(info[0], out result.productID);
                 result.name = info[1];
                 double.TryParse(info[2], out result.cost);
@@ -118,7 +126,7 @@ namespace Amiezone
         }
         public class store
         {
-            List<item> itemsAvailable = new List<item>();
+            List<Item> itemsAvailable = new List<Item>();
             public string category;
             public string storeName;
 
@@ -130,7 +138,7 @@ namespace Amiezone
 
                 foreach(string file in files)
                 {
-                    item newItem = new item();
+                    Item newItem = new Item();
                     string[] info = System.IO.File.ReadAllLines(file);
                     newItem.productID = long.Parse(info[0]);
                     newItem.name = info[1];

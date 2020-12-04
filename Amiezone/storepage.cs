@@ -16,30 +16,34 @@ namespace Amiezone
 
         User currentUser;
         ShoppingCart currentCart;
-        // CurrentStores likely unnecessary
         Storefront currentStores;
+
+        public static DataGridView passingGridTable;
+        public static double runningFunds;
         public storepage(User newUser)
         {
             InitializeComponent();
             userInfoBox.Text = "asdf";
             currentUser = newUser;
             currentCart = new ShoppingCart();
-            userInfoBox.Text = String.Format("User: {0}\n", currentUser.name);
-            userInfoBox.Text += String.Format("Address: {0}\n", currentUser.address);
-            userInfoBox.Text += String.Format("Funds: {0}\n", currentUser.wallet);
+            reinitalizeUser();
             loadStores();
         }
-
         public storepage(User newUser, ShoppingCart cart)
         {
             InitializeComponent();
             currentUser = newUser;
             currentCart = cart;
             currentUser = newUser;
+            reinitalizeUser();
+            loadStores();
+        }
+        // Adjusts userinfo when they checked out a cart or storepage is made
+        public void reinitalizeUser()
+        {
             userInfoBox.Text = String.Format("User: {0}\n", currentUser.name);
             userInfoBox.Text += String.Format("Address: {0}\n", currentUser.address);
             userInfoBox.Text += String.Format("Funds: {0}\n", currentUser.wallet);
-            loadStores();
         }
         //loads in stores from store folder
         public void loadStores()
@@ -72,6 +76,7 @@ namespace Amiezone
             foreach (string itemFile in Directory.EnumerateFiles(filePath, "*.txt"))
             {
                 ItemBox.Items.Clear();
+                storeLabel.Text = "Current Store: " + StoreBox.SelectedItem.ToString();
 
                 string contents = Path.GetFileNameWithoutExtension(itemFile).ToString();
                 ItemBox.Items.Add(contents);
@@ -103,22 +108,17 @@ namespace Amiezone
         private void ItemBox_MouseClick(object sender, EventArgs e)
         {
             // When user clicks will read file associated with item
-            /* File Structure:
-             * Item ID
-             * Item Name
-             * Item Cost
-             * Item Desc
-            */
             // File picture will be same name but with the extension difference
 
             if(ItemBox.SelectedItem == null)
             {
                 return;
             }
+
             descriptionBox.Text = ItemBox.SelectedItem.ToString();
             string x = StoreBox.SelectedItem.ToString();
             string y = ItemBox.SelectedItem.ToString();
-            item addedItem = item.GetItem(x, y);
+            Item addedItem = Item.GetItem(x, y);
 
             descriptionBox.Text = addedItem.name + " ";
             descriptionBox.Text += String.Format("({0})\n", addedItem.productID);
@@ -155,7 +155,6 @@ namespace Amiezone
                     ItemBox.Items.Add(contents);
                 }
             }
-
         }
 
         private void createButton_MouseClick(object sender, MouseEventArgs e)
@@ -168,22 +167,50 @@ namespace Amiezone
 
         private void orderButton_MouseClick(object sender, MouseEventArgs e)
         {
-            // User did select something
-            if (ItemBox.SelectedIndex != null)
+            // User did select an item
+            if (ItemBox.SelectedItem != null)
             {
                 string x = StoreBox.SelectedItem.ToString();
                 string y = ItemBox.SelectedItem.ToString();
-                item addedItem = item.GetItem(x,y);
-                currentCart.itemsInCart.Add(addedItem);
-                double cost = double.Parse(totalSoFarLabel.Text) + addedItem.cost;
-                totalSoFarLabel.Text = cost.ToString();
-            }
+                Item addedItem = Item.GetItem(x,y);
 
+                //Checks for item in Middle Table
+                Boolean notFound = true;
+                foreach(DataGridViewRow currentRow in dataGridView1.Rows)
+                {
+                    if(currentRow == null || currentRow.Cells[0].Value == null)
+                    {
+                        currentRow.Cells[0].Value = addedItem.name;
+                        currentRow.Cells[1].Value = addedItem.cost;
+                        currentRow.Cells[2].Value = 1;
+                        currentRow.Cells[3].Value = StoreBox.SelectedItem.ToString();
+                        notFound = false;
+                    }
+                    else if ((string)currentRow.Cells[0].Value == addedItem.name)
+                    {
+                        // Casts Object->int
+                        int cellQuanity = (int)currentRow.Cells[2].Value;
+                        
+                        currentRow.Cells[2].Value = cellQuanity + 1;
+                        notFound = false;
+                    }
+                }
+                if (notFound == true)
+                {
+                    MessageBox.Show((string)dataGridView1.Rows[dataGridView1.RowCount-1].Cells[0].Value + '\n' + addedItem.name);
+                    dataGridView1.Rows.Add(addedItem.name, addedItem.cost, 1);
+                }
+                double cost = double.Parse(totalSoFarLabel.Text) + addedItem.cost;
+                totalSoFarLabel.Text = cost.ToString(); 
+            }
         }
         private void checkoutButton_MouseClick(object sender, MouseEventArgs e)
         {
-            checkout check = new checkout(currentUser, currentCart);
-            this.Close();
+            double total = double.Parse(totalSoFarLabel.Text);
+            passingGridTable = dataGridView1;
+            checkout check = new checkout(currentUser, currentCart, this);
+            this.Hide();
+            this.Enabled = false;
             check.Show();
         }
 
