@@ -23,7 +23,6 @@ namespace Amiezone
         public storepage(User newUser)
         {
             InitializeComponent();
-            userInfoBox.Text = "asdf";
             currentUser = newUser;
             currentCart = new ShoppingCart();
             reinitalizeUser();
@@ -34,13 +33,20 @@ namespace Amiezone
             InitializeComponent();
             currentUser = newUser;
             currentCart = cart;
-            currentUser = newUser;
             reinitalizeUser();
             loadStores();
         }
         // Adjusts userinfo when they checked out a cart or storepage is made
         public void reinitalizeUser()
         {
+            string path = Path.Combine(storeClasses.generalFilePath, "Users", currentUser.name) + ".txt";
+            string[] info = System.IO.File.ReadAllLines(path);
+ 
+            currentUser.password = info[0];
+            currentUser.ID = long.Parse(info[1]);
+            currentUser.wallet = double.Parse(info[2]);
+            currentUser.address = info[3];
+
             userInfoBox.Text = String.Format("User: {0}\n", currentUser.name);
             userInfoBox.Text += String.Format("Address: {0}\n", currentUser.address);
             userInfoBox.Text += String.Format("Funds: {0}\n", currentUser.wallet);
@@ -66,46 +72,53 @@ namespace Amiezone
             }
         }
 
-        private void StoreBox_SelectedIndexChanged(object sender, EventArgs e)
+        // Loads in store items
+        private void reinitializeProducts(object sender, EventArgs e)
         {
             if(StoreBox.SelectedItem == null)
             {
                 return;
             }
+
+            ItemBox.Items.Clear();
+            storeNameLable.Text = StoreBox.SelectedItem.ToString();
+
             string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", StoreBox.SelectedItem.ToString());
             foreach (string itemFile in Directory.EnumerateFiles(filePath, "*.txt"))
             {
-                ItemBox.Items.Clear();
-                storeLabel.Text = "Current Store: " + StoreBox.SelectedItem.ToString();
-
                 string contents = Path.GetFileNameWithoutExtension(itemFile).ToString();
                 ItemBox.Items.Add(contents);
             }
         }
 
         // Loads a pic into the box when selecting a new item
-        private void LoadNewPict(PictureBox pic, string filename)
+        private void loadNewPic(PictureBox pic, string filename)
         {
-            
             // get into the Stores dir, selectedStore, and then get the image file
-            string store = storeLabel.Text;
+            string[] exts = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
+            string store = storeNameLable.Text;
             string finalPath = Path.Combine(storeClasses.generalFilePath, "Stores");
-            finalPath = Path.Combine(finalPath, Path.GetDirectoryName(store));
+            finalPath = Path.Combine(finalPath, store);
             finalPath = Path.Combine(finalPath, Path.GetFileName(filename));
-            if(File.Exists(finalPath) == false)
+            foreach(string x in exts)
             {
-                string path = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
-                pic.Image = Image.FromFile(path);
+                if (File.Exists(finalPath + x) == true)
+                {
+                    finalPath = finalPath + x;
+                    pic.Image = Image.FromFile(finalPath);
+                    return;
+                }
             }
-            else
-            {
-                pic.Image = Image.FromFile(finalPath);
-            }
+            MessageBox.Show("defaulted");
+            // File doesn't exist so default
+            string path = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
+            pic.Image = Image.FromFile(path);
+
         }
 
 
         // Loads in the selected item from the list into the description
-        private void ItemBox_MouseClick(object sender, EventArgs e)
+        private void loadItem(object sender, EventArgs e)
         {
             // When user clicks will read file associated with item
             // File picture will be same name but with the extension difference
@@ -120,18 +133,18 @@ namespace Amiezone
             string y = ItemBox.SelectedItem.ToString();
             Item addedItem = Item.GetItem(x, y);
 
-            descriptionBox.Text = addedItem.name + " ";
-            descriptionBox.Text += String.Format("({0})\n", addedItem.productID);
+            descriptionBox.Text = addedItem.name + " \n";
+            descriptionBox.Text += String.Format("(Product ID: {0})\n", addedItem.productID);
             descriptionBox.Text += String.Format("------------------------------\n");
-            descriptionBox.Text += String.Format("(Description: {0})\n", addedItem.description);
-            descriptionBox.Text += String.Format("Cost: {0}", addedItem.cost);
+            descriptionBox.Text += String.Format("Description: {0}\n\n", addedItem.description);
+            descriptionBox.Text += String.Format("Cost: ${0}", addedItem.cost);
 
-            string imagePath = addedItem.name + ".jpg";
-            LoadNewPict(itemPicture, imagePath);
+            string imagePath = addedItem.name;
+            loadNewPic(itemPicture, imagePath);
         }
 
         // Function to get the store through load
-        private void loadButton_MouseClick(object sender, MouseEventArgs e)
+        private void loadStore(object sender, MouseEventArgs e)
         {
             string folderPath;
             string storeName;
@@ -147,7 +160,7 @@ namespace Amiezone
                 folderPath = folderDialog.SelectedPath;
 
                 storeName = Path.GetFileName(folderPath);
-                storeLabel.Text = "Current Store: " + storeName;
+                storeNameLable.Text = storeName;
 
                 foreach (string itemFile in Directory.EnumerateFiles(folderPath, "*txt"))
                 {
@@ -157,15 +170,16 @@ namespace Amiezone
             }
         }
 
-        private void createButton_MouseClick(object sender, MouseEventArgs e)
+        private void gotoCreateform(object sender, MouseEventArgs e)
         {
             makeItems createForm = new makeItems(this);
             createForm.Show();
-            // Make sure to reenable in makeItems close
+            // reenables in makeItems close
             this.Enabled = false;
         }
 
-        private void orderButton_MouseClick(object sender, MouseEventArgs e)
+        //Adds item to cart and updates table
+        private void orderItem(object sender, MouseEventArgs e)
         {
             // User did select an item
             if (ItemBox.SelectedItem != null)
@@ -183,7 +197,8 @@ namespace Amiezone
                         currentRow.Cells[0].Value = addedItem.name;
                         currentRow.Cells[1].Value = addedItem.cost;
                         currentRow.Cells[2].Value = 1;
-                        currentRow.Cells[3].Value = StoreBox.SelectedItem.ToString();
+                        currentRow.Cells[3].Value = storeNameLable.ToString();
+                        MessageBox.Show(StoreBox.SelectedItem.ToString());
                         notFound = false;
                     }
                     else if ((string)currentRow.Cells[0].Value == addedItem.name)
@@ -197,14 +212,55 @@ namespace Amiezone
                 }
                 if (notFound == true)
                 {
-                    MessageBox.Show((string)dataGridView1.Rows[dataGridView1.RowCount-1].Cells[0].Value + '\n' + addedItem.name);
                     dataGridView1.Rows.Add(addedItem.name, addedItem.cost, 1);
                 }
                 double cost = double.Parse(totalSoFarLabel.Text) + addedItem.cost;
                 totalSoFarLabel.Text = cost.ToString(); 
             }
         }
-        private void checkoutButton_MouseClick(object sender, MouseEventArgs e)
+
+        // Removes one of instance of the item at a time
+        private void removeoOne(object sender, MouseEventArgs e)
+        {
+            if(dataGridView1.SelectedRows != null)
+            {
+                int val = (int)dataGridView1.SelectedRows[0].Cells[3].Value;
+                if(val > 1)
+                {
+                    Item removeing = Item.GetItem(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+                    dataGridView1.SelectedRows[0].Cells[3].Value = val - 1;
+                    currentCart.removeItem(removeing.productID);
+
+                    double newValue = double.Parse(totalSoFarLabel.Text) - removeing.cost;
+                    totalSoFarLabel.Text = newValue.ToString();
+                }
+                else
+                {
+                    Item removeing = Item.GetItem(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+                    currentCart.removeItem(removeing.productID);
+
+                    double newValue = double.Parse(totalSoFarLabel.Text) - removeing.cost;
+                    totalSoFarLabel.Text = newValue.ToString();
+                    dataGridView1.Rows.Remove(dataGridView1.SelectedRows[0]);
+                }
+            }
+        }
+
+        // Removes the entire item row entry
+        private void removeAll(object sender, MouseEventArgs e)
+        {
+            if (dataGridView1.SelectedRows != null)
+            {
+                Item removeing = Item.GetItem(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+                currentCart.removeItem(removeing.productID);
+
+                double newValue = double.Parse(totalSoFarLabel.Text) - ((double)dataGridView1.SelectedRows[0].Cells[1].Value * (int)dataGridView1.SelectedRows[0].Cells[2].Value);
+                totalSoFarLabel.Text = newValue.ToString();
+                dataGridView1.Rows.Remove(dataGridView1.SelectedRows[0]);
+            }
+        }
+
+        private void gotoCheckout(object sender, MouseEventArgs e)
         {
             double total = double.Parse(totalSoFarLabel.Text);
             passingGridTable = dataGridView1;
@@ -214,18 +270,20 @@ namespace Amiezone
             check.Show();
         }
 
+        private void logout(object sender, MouseEventArgs e)
+        {
+            login newLogin = new login();
+            newLogin.Show();
+            this.Dispose();
+        }
 
-
-
-        // Below is for making labels clickable
-        // Likely have to make multiple labels/text boxes on the storefront
-        /*
-        Label label = new Label { Text = "Click me" };
-        label.Click += delegate { label.Text = "Clicked"; };
-
-        This bit is mostly  useless
-        Application.Run(new Form { Controls = { label } } );
-        */
+        private void gotoAccountDetails(object sender, MouseEventArgs e)
+        {
+            Register accountDetail = new Register(this, currentUser);
+            this.Enabled = false;
+            accountDetail.Show();
+            reinitalizeUser();
+        }
     }
 
 

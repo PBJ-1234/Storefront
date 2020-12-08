@@ -29,16 +29,17 @@
         private void InitializeComponent()
         {
             this.totalLabel = new System.Windows.Forms.Label();
-            this.BankCheck = new System.Windows.Forms.Button();
+            this.bankcheckButton = new System.Windows.Forms.Button();
             this.returnButton = new System.Windows.Forms.Button();
             this.cost = new System.Windows.Forms.Label();
-            this.WalletButton = new System.Windows.Forms.Button();
-            this.CreditButton = new System.Windows.Forms.Button();
+            this.cashButton = new System.Windows.Forms.Button();
+            this.creditCardButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.FinalGridView = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StoreName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.FinalGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,15 +52,15 @@
             this.totalLabel.TabIndex = 1;
             this.totalLabel.Text = "Total: $";
             // 
-            // BankCheck
+            // bankcheckButton
             // 
-            this.BankCheck.Location = new System.Drawing.Point(453, 253);
-            this.BankCheck.Name = "BankCheck";
-            this.BankCheck.Size = new System.Drawing.Size(75, 23);
-            this.BankCheck.TabIndex = 2;
-            this.BankCheck.Text = "Bank Check";
-            this.BankCheck.UseVisualStyleBackColor = true;
-            this.BankCheck.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BankCheckButton_MouseClick);
+            this.bankcheckButton.Location = new System.Drawing.Point(453, 253);
+            this.bankcheckButton.Name = "bankcheckButton";
+            this.bankcheckButton.Size = new System.Drawing.Size(75, 23);
+            this.bankcheckButton.TabIndex = 2;
+            this.bankcheckButton.Text = "Bank Check";
+            this.bankcheckButton.UseVisualStyleBackColor = true;
+            this.bankcheckButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BankCheckButton_MouseClick);
             // 
             // returnButton
             // 
@@ -80,25 +81,25 @@
             this.cost.TabIndex = 4;
             this.cost.Text = "0.00";
             // 
-            // WalletButton
+            // cashButton
             // 
-            this.WalletButton.Location = new System.Drawing.Point(453, 156);
-            this.WalletButton.Name = "WalletButton";
-            this.WalletButton.Size = new System.Drawing.Size(75, 23);
-            this.WalletButton.TabIndex = 5;
-            this.WalletButton.Text = "Checkout";
-            this.WalletButton.UseVisualStyleBackColor = true;
-            this.WalletButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.WalletButton_MouseClick);
+            this.cashButton.Location = new System.Drawing.Point(453, 156);
+            this.cashButton.Name = "cashButton";
+            this.cashButton.Size = new System.Drawing.Size(75, 23);
+            this.cashButton.TabIndex = 5;
+            this.cashButton.Text = "Checkout";
+            this.cashButton.UseVisualStyleBackColor = true;
+            this.cashButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.WalletButton_MouseClick);
             // 
-            // CreditButton
+            // creditCardButton
             // 
-            this.CreditButton.Location = new System.Drawing.Point(453, 205);
-            this.CreditButton.Name = "CreditButton";
-            this.CreditButton.Size = new System.Drawing.Size(75, 23);
-            this.CreditButton.TabIndex = 6;
-            this.CreditButton.Text = "Credit Card";
-            this.CreditButton.UseVisualStyleBackColor = true;
-            this.CreditButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CreditButton_MouseClick);
+            this.creditCardButton.Location = new System.Drawing.Point(453, 205);
+            this.creditCardButton.Name = "creditCardButton";
+            this.creditCardButton.Size = new System.Drawing.Size(75, 23);
+            this.creditCardButton.TabIndex = 6;
+            this.creditCardButton.Text = "Credit Card";
+            this.creditCardButton.UseVisualStyleBackColor = true;
+            this.creditCardButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CreditButton_MouseClick);
             // 
             // label1
             // 
@@ -113,28 +114,34 @@
             // 
             this.FinalGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.FinalGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column3,
-            this.Column2});
+            this.ItemName,
+            this.ItemCost,
+            this.ItemAmount,
+            this.StoreName});
             this.FinalGridView.Location = new System.Drawing.Point(112, 156);
             this.FinalGridView.Name = "FinalGridView";
             this.FinalGridView.Size = new System.Drawing.Size(335, 150);
             this.FinalGridView.TabIndex = 8;
             // 
-            // Column1
+            // ItemName
             // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
+            this.ItemName.HeaderText = "Name:";
+            this.ItemName.Name = "ItemName";
             // 
-            // Column3
+            // ItemCost
             // 
-            this.Column3.HeaderText = "Column3";
-            this.Column3.Name = "Column3";
+            this.ItemCost.HeaderText = "Price:";
+            this.ItemCost.Name = "ItemCost";
             // 
-            // Column2
+            // ItemAmount
             // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.Name = "Column2";
+            this.ItemAmount.HeaderText = "Quan:";
+            this.ItemAmount.Name = "ItemAmount";
+            // 
+            // StoreName
+            // 
+            this.StoreName.HeaderText = "Store";
+            this.StoreName.Name = "StoreName";
             // 
             // checkout
             // 
@@ -143,14 +150,14 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.FinalGridView);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CreditButton);
-            this.Controls.Add(this.WalletButton);
+            this.Controls.Add(this.creditCardButton);
+            this.Controls.Add(this.cashButton);
             this.Controls.Add(this.cost);
             this.Controls.Add(this.returnButton);
-            this.Controls.Add(this.BankCheck);
+            this.Controls.Add(this.bankcheckButton);
             this.Controls.Add(this.totalLabel);
             this.Name = "checkout";
-            this.Text = "Form1";
+            this.Text = "Checkout";
             ((System.ComponentModel.ISupportInitialize)(this.FinalGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -161,13 +168,14 @@
         private System.Windows.Forms.Label totalLabel;
         private System.Windows.Forms.Button returnButton;
         private System.Windows.Forms.Label cost;
-        private System.Windows.Forms.Button WalletButton;
-        private System.Windows.Forms.Button CreditButton;
-        private System.Windows.Forms.Button BankCheck;
+        private System.Windows.Forms.Button cashButton;
+        private System.Windows.Forms.Button creditCardButton;
+        private System.Windows.Forms.Button bankcheckButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView FinalGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemCost;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StoreName;
     }
 }

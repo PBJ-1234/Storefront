@@ -14,18 +14,37 @@ namespace Amiezone
     public partial class Register : Form
     {
         login loginPage;
+        storepage storefront;
+        User viewingUser;
         public Register(login prevPage)
         {
             loginPage = prevPage;
             InitializeComponent();
         }
+        public Register(storepage prevPage, User vUser)
+        {
+            storefront = prevPage;
+            viewingUser = vUser;
+            InitializeComponent();
+            editButton.Show();
+            RegisterButton.Hide();
+
+            UsernameBox.Text = viewingUser.name;
+            PasswordBox.Text = viewingUser.password;
+            FundsBox.Text = viewingUser.wallet.ToString();
+            AddressBox.Text = viewingUser.address;
+
+            UsernameBox.ReadOnly = true;
+            PasswordBox.ReadOnly = true;
+            FundsBox.ReadOnly = true;
+            AddressBox.ReadOnly = true;
+        }
+
 
         private void registerButton(object sender, EventArgs e)
         {
-            //Need to figure out how to get ticks in right
             Boolean exists = false;
-            DateTime date = new DateTime();
-            long n = date.Ticks;
+            long n = DateTimeOffset.Now.ToUnixTimeSeconds();
 
             // Check that everything has been filled in
             if(UsernameBox.Text == "" || PasswordBox.Text == "" || FundsBox.Text == "" || AddressBox.Text == "")
@@ -36,39 +55,87 @@ namespace Amiezone
             // Turns user textbox into a filepath
             string user = Path.Combine(storeClasses.generalFilePath, "Users", UsernameBox.Text + ".txt");
             string pass = PasswordBox.Text;
-            string projectPath = storeClasses.generalFilePath;
-            projectPath = Path.Combine(projectPath, "Users");
+            string projectPath = Path.Combine(storeClasses.generalFilePath, "Users");
 
-            // Checks for file existance
-            foreach (string itemFile in Directory.EnumerateFiles(projectPath))
+            if(loginPage != null)
             {
-                if (itemFile == user)
+                // Checks for file existance
+                foreach (string itemFile in Directory.EnumerateFiles(projectPath))
                 {
-                    MessageBox.Show("User already exists");
-                    exists = true;
-                    return;
+                    if (itemFile == user)
+                    {
+                        MessageBox.Show("User already exists");
+                        exists = true;
+                        return;
+                    }
+                }
+
+                // Creates a file to write to if file doesn't already exist.
+                if (exists == false)
+                {
+                    // Creates a file to write to.
+                    StreamWriter create = File.CreateText(user);
+
+                    string funds = FundsBox.Text;
+                    string address = AddressBox.Text;
+                    string[] data = { pass, n.ToString(), funds, address };
+
+                    create.WriteLine(pass);
+                    create.WriteLine(n);
+                    create.WriteLine(funds);
+                    create.WriteLine(address);
+                    create.Close();
+
+                    loginPage.Enabled = true;
+                    this.Close();
                 }
             }
-
-            // Creates a file to write to if file doesn't already exist.
-            if (exists == false)
+            //Editing
+            else if (storefront != null)
             {
-                // Creates a file to write to.
-                string path = Path.Combine(projectPath, user);
+
+                // Deletes file to then remake
+                File.Delete(user);
+                StreamWriter create = File.CreateText(user);
+
                 string funds = FundsBox.Text;
                 string address = AddressBox.Text;
                 string[] data = { pass, n.ToString(), funds, address };
 
-                System.IO.File.WriteAllLines(path, data);
+                create.WriteLine(pass);
+                create.WriteLine(n);
+                create.WriteLine(funds);
+                create.WriteLine(address);
+                create.Close();
+
+                storefront.Enabled = true;
+                this.Close();
+                viewingUser.wallet = double.Parse(funds);
+                viewingUser.address = address;
+                storefront.reinitalizeUser();
+            }
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            PasswordBox.ReadOnly = false;
+            FundsBox.ReadOnly = false;
+            AddressBox.ReadOnly = false;
+            RegisterButton.Show();
+        }
+
+        private void exitRegister(object sender, EventArgs e)
+        {
+            if (loginPage != null)
+            { 
                 loginPage.Enabled = true;
                 this.Close();
             }
-
-        }
-        private void exitRegister(object sender, EventArgs e)
-        {
-            loginPage.Enabled = true;
-            this.Close();
+            else if(storefront != null)
+            {
+                storefront.Enabled = true;
+                this.Close();
+            }
         }
     }
 }

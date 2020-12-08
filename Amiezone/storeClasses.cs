@@ -32,33 +32,17 @@ namespace Amiezone
     {
         //Paths to Project\Amiezone\Amiezone
         public static string generalFilePath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-        public static string getPath(string folder, string file)
-        {
-            string path = "sdf";
-            return path;
-        }
     }
         // User and Cart
         
         public class User
         {
             public string name;
-            public int ID;
+            public long ID;
             public double wallet;
             public string address;
             public string password;
 
-            public void modifyFunds(double funds)
-            {
-                wallet = wallet + funds;
-            }
-            public void modifyAccountInfo()
-            {
-                string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
-                //TO DO: Rework register page to allow for use or create another form entirely
-                //open up box or form to change file
-
-            }
             //return the file
             private void viewAccountInfo()
             {
@@ -73,10 +57,8 @@ namespace Amiezone
         {
             public List<Item> itemsInCart = new List<Item>();
 
-            public void removeItem(int productID)
+            public void removeItem(long productID)
             {
-                // May need to use int[][] 1st id: 2nd amount
-                // Though can just use item lsit
                 foreach(Item curItem in itemsInCart)
                 {
                     if(curItem.productID == productID)
@@ -88,16 +70,16 @@ namespace Amiezone
         }
 
         // Stores and products
-            /* File Structure:
-             * Item ID
-             * Item Name
-             * Item Cost
-             * Item Desc
-            */        
+            
+        /* File Structure:
+        * Item ID
+        * Item Name
+        * Item Cost
+        * Item Desc
+        */        
         public class Item
         {
-
-        public long productID;
+            public long productID;
             public string name;
             public double cost;
             public string description;
@@ -124,6 +106,7 @@ namespace Amiezone
                 return imagePath;
             }
         }
+        
         public class store
         {
             List<Item> itemsAvailable = new List<Item>();
@@ -147,16 +130,13 @@ namespace Amiezone
 
                     itemsAvailable.Add(newItem);
                 }
-
             }
-
-
         }
+
         public class Storefront
         {
             //Null referance fix with intialization or implementation as own class
             public List<store> storelist = new List<store> { };
-
 
             //Potential problem with discovering filepathing
             public void rebuildStores()

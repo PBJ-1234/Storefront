@@ -38,6 +38,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.RegisterButton = new System.Windows.Forms.Button();
             this.ReturnButton = new System.Windows.Forms.Button();
+            this.editButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // UsernameBox
@@ -71,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(215, 169);
+            this.label1.Location = new System.Drawing.Point(215, 173);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 4;
@@ -80,7 +81,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(215, 197);
+            this.label2.Location = new System.Drawing.Point(217, 200);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 5;
@@ -89,7 +90,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(215, 223);
+            this.label3.Location = new System.Drawing.Point(234, 226);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 6;
@@ -98,7 +99,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(215, 249);
+            this.label4.Location = new System.Drawing.Point(225, 252);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
             this.label4.TabIndex = 7;
@@ -124,11 +125,23 @@
             this.ReturnButton.UseVisualStyleBackColor = true;
             this.ReturnButton.Click += new System.EventHandler(this.exitRegister);
             // 
+            // editButton
+            // 
+            this.editButton.Location = new System.Drawing.Point(283, 142);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(139, 23);
+            this.editButton.TabIndex = 10;
+            this.editButton.Text = "Enable Edit";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Visible = false;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
+            // 
             // Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.editButton);
             this.Controls.Add(this.ReturnButton);
             this.Controls.Add(this.RegisterButton);
             this.Controls.Add(this.label4);
@@ -158,5 +171,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button RegisterButton;
         private System.Windows.Forms.Button ReturnButton;
+        private System.Windows.Forms.Button editButton;
     }
 }

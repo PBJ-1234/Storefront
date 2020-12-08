@@ -38,25 +38,26 @@ namespace Amiezone
                     {
                         currentUser.name = UsernameBox.Text;
                         currentUser.password = info[0];
-                        currentUser.ID = int.Parse(info[1]);
+                        currentUser.ID = long.Parse(info[1]);
                         currentUser.wallet = double.Parse(info[2]);
                         currentUser.address = info[3];
                     }
                     else
                     {
-                        MessageBox.Show("Wrong Password, please retry login.");
+                        MessageBox.Show("Please retry login.");
                         return;
                     }
                 }
             }
             if(exists == false)
             {
-                MessageBox.Show("User does not exist, please retry login.");
+                MessageBox.Show("Please retry login.");
                 return;
             }
             this.Hide();
             storepage store = new storepage(currentUser);
-            store.Show();
+            store.Closed += (s, args) => this.Close();
+            store.Show();            
         }
 
         private void registerButton_Click(object sender, EventArgs e)

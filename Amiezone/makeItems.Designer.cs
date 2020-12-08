@@ -40,44 +40,49 @@
             this.description = new System.Windows.Forms.RichTextBox();
             this.storeNameLabel = new System.Windows.Forms.Label();
             this.categoryLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.itemStoreNameLabel = new System.Windows.Forms.Label();
+            this.itemNameLabel = new System.Windows.Forms.Label();
+            this.costLabel = new System.Windows.Forms.Label();
+            this.picturePreview = new System.Windows.Forms.PictureBox();
+            this.imagePath = new System.Windows.Forms.TextBox();
+            this.imagePathLabel = new System.Windows.Forms.Label();
+            this.browseButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.picturePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // storeName
             // 
-            this.storeName.Location = new System.Drawing.Point(294, 124);
+            this.storeName.Location = new System.Drawing.Point(226, 152);
             this.storeName.Name = "storeName";
             this.storeName.Size = new System.Drawing.Size(100, 20);
             this.storeName.TabIndex = 0;
             // 
             // category
             // 
-            this.category.Location = new System.Drawing.Point(294, 162);
+            this.category.Location = new System.Drawing.Point(226, 187);
             this.category.Name = "category";
             this.category.Size = new System.Drawing.Size(100, 20);
             this.category.TabIndex = 1;
             // 
             // itemName
             // 
-            this.itemName.Location = new System.Drawing.Point(483, 165);
+            this.itemName.Location = new System.Drawing.Point(414, 152);
             this.itemName.Name = "itemName";
             this.itemName.Size = new System.Drawing.Size(100, 20);
             this.itemName.TabIndex = 3;
             // 
             // cost
             // 
-            this.cost.Location = new System.Drawing.Point(483, 200);
+            this.cost.Location = new System.Drawing.Point(414, 187);
             this.cost.Name = "cost";
             this.cost.Size = new System.Drawing.Size(100, 20);
             this.cost.TabIndex = 4;
             // 
             // storeButton
             // 
-            this.storeButton.Location = new System.Drawing.Point(307, 66);
+            this.storeButton.Location = new System.Drawing.Point(142, 53);
             this.storeButton.Name = "storeButton";
-            this.storeButton.Size = new System.Drawing.Size(75, 23);
+            this.storeButton.Size = new System.Drawing.Size(184, 49);
             this.storeButton.TabIndex = 7;
             this.storeButton.Text = "Make Store";
             this.storeButton.UseVisualStyleBackColor = true;
@@ -85,9 +90,9 @@
             // 
             // itemButton
             // 
-            this.itemButton.Location = new System.Drawing.Point(497, 66);
+            this.itemButton.Location = new System.Drawing.Point(345, 53);
             this.itemButton.Name = "itemButton";
-            this.itemButton.Size = new System.Drawing.Size(75, 23);
+            this.itemButton.Size = new System.Drawing.Size(169, 49);
             this.itemButton.TabIndex = 8;
             this.itemButton.Text = "Make Item";
             this.itemButton.UseVisualStyleBackColor = true;
@@ -95,9 +100,9 @@
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(398, 334);
+            this.createButton.Location = new System.Drawing.Point(142, 303);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(75, 23);
+            this.createButton.Size = new System.Drawing.Size(372, 36);
             this.createButton.TabIndex = 9;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
@@ -105,9 +110,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(398, 395);
+            this.button4.Location = new System.Drawing.Point(520, 402);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(229, 36);
             this.button4.TabIndex = 10;
             this.button4.Text = "Return";
             this.button4.UseVisualStyleBackColor = true;
@@ -115,23 +120,23 @@
             // 
             // itemStore
             // 
-            this.itemStore.Location = new System.Drawing.Point(483, 124);
+            this.itemStore.Location = new System.Drawing.Point(414, 111);
             this.itemStore.Name = "itemStore";
             this.itemStore.Size = new System.Drawing.Size(100, 20);
             this.itemStore.TabIndex = 2;
             // 
             // description
             // 
-            this.description.Location = new System.Drawing.Point(589, 124);
+            this.description.Location = new System.Drawing.Point(520, 111);
             this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(100, 96);
+            this.description.Size = new System.Drawing.Size(229, 134);
             this.description.TabIndex = 11;
             this.description.Text = "";
             // 
             // storeNameLabel
             // 
             this.storeNameLabel.AutoSize = true;
-            this.storeNameLabel.Location = new System.Drawing.Point(222, 127);
+            this.storeNameLabel.Location = new System.Drawing.Point(153, 156);
             this.storeNameLabel.Name = "storeNameLabel";
             this.storeNameLabel.Size = new System.Drawing.Size(66, 13);
             this.storeNameLabel.TabIndex = 12;
@@ -140,47 +145,85 @@
             // categoryLabel
             // 
             this.categoryLabel.AutoSize = true;
-            this.categoryLabel.Location = new System.Drawing.Point(208, 165);
+            this.categoryLabel.Location = new System.Drawing.Point(139, 189);
             this.categoryLabel.Name = "categoryLabel";
             this.categoryLabel.Size = new System.Drawing.Size(80, 13);
             this.categoryLabel.TabIndex = 13;
             this.categoryLabel.Text = "Store Category:";
             // 
-            // label3
+            // itemStoreNameLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(406, 127);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 13);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Store Name:";
+            this.itemStoreNameLabel.AutoSize = true;
+            this.itemStoreNameLabel.Location = new System.Drawing.Point(337, 114);
+            this.itemStoreNameLabel.Name = "itemStoreNameLabel";
+            this.itemStoreNameLabel.Size = new System.Drawing.Size(66, 13);
+            this.itemStoreNameLabel.TabIndex = 14;
+            this.itemStoreNameLabel.Text = "Store Name:";
             // 
-            // label4
+            // itemNameLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(411, 169);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "Item Name:";
+            this.itemNameLabel.AutoSize = true;
+            this.itemNameLabel.Location = new System.Drawing.Point(342, 156);
+            this.itemNameLabel.Name = "itemNameLabel";
+            this.itemNameLabel.Size = new System.Drawing.Size(61, 13);
+            this.itemNameLabel.TabIndex = 14;
+            this.itemNameLabel.Text = "Item Name:";
             // 
-            // label5
+            // costLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(441, 203);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Cost:";
+            this.costLabel.AutoSize = true;
+            this.costLabel.Location = new System.Drawing.Point(372, 190);
+            this.costLabel.Name = "costLabel";
+            this.costLabel.Size = new System.Drawing.Size(31, 13);
+            this.costLabel.TabIndex = 15;
+            this.costLabel.Text = "Cost:";
+            // 
+            // picturePreview
+            // 
+            this.picturePreview.Location = new System.Drawing.Point(520, 260);
+            this.picturePreview.Name = "picturePreview";
+            this.picturePreview.Size = new System.Drawing.Size(229, 136);
+            this.picturePreview.TabIndex = 16;
+            this.picturePreview.TabStop = false;
+            // 
+            // imagePath
+            // 
+            this.imagePath.Location = new System.Drawing.Point(414, 225);
+            this.imagePath.Name = "imagePath";
+            this.imagePath.Size = new System.Drawing.Size(100, 20);
+            this.imagePath.TabIndex = 17;
+            // 
+            // imagePathLabel
+            // 
+            this.imagePathLabel.AutoSize = true;
+            this.imagePathLabel.Location = new System.Drawing.Point(337, 228);
+            this.imagePathLabel.Name = "imagePathLabel";
+            this.imagePathLabel.Size = new System.Drawing.Size(64, 13);
+            this.imagePathLabel.TabIndex = 18;
+            this.imagePathLabel.Text = "Image Path:";
+            // 
+            // browseButton
+            // 
+            this.browseButton.Location = new System.Drawing.Point(414, 260);
+            this.browseButton.Name = "browseButton";
+            this.browseButton.Size = new System.Drawing.Size(75, 23);
+            this.browseButton.TabIndex = 19;
+            this.browseButton.Text = "Browse";
+            this.browseButton.UseVisualStyleBackColor = true;
+            this.browseButton.Click += new System.EventHandler(this.selectPicture_Click);
             // 
             // makeItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(761, 450);
+            this.Controls.Add(this.browseButton);
+            this.Controls.Add(this.imagePathLabel);
+            this.Controls.Add(this.imagePath);
+            this.Controls.Add(this.picturePreview);
+            this.Controls.Add(this.costLabel);
+            this.Controls.Add(this.itemNameLabel);
+            this.Controls.Add(this.itemStoreNameLabel);
             this.Controls.Add(this.categoryLabel);
             this.Controls.Add(this.storeNameLabel);
             this.Controls.Add(this.description);
@@ -195,6 +238,7 @@
             this.Controls.Add(this.storeName);
             this.Name = "makeItems";
             this.Text = "Create Items/Stores";
+            ((System.ComponentModel.ISupportInitialize)(this.picturePreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,8 +258,12 @@
         private System.Windows.Forms.RichTextBox description;
         private System.Windows.Forms.Label storeNameLabel;
         private System.Windows.Forms.Label categoryLabel;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label itemStoreNameLabel;
+        private System.Windows.Forms.Label itemNameLabel;
+        private System.Windows.Forms.Label costLabel;
+        private System.Windows.Forms.PictureBox picturePreview;
+        private System.Windows.Forms.TextBox imagePath;
+        private System.Windows.Forms.Label imagePathLabel;
+        private System.Windows.Forms.Button browseButton;
     }
 }

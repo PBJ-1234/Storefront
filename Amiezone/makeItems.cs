@@ -31,6 +31,9 @@ namespace Amiezone
             cost.Show();
             description.Show();
             createButton.Show();
+            imagePath.Show();
+            picturePreview.Show();
+            browseButton.Show();
             itemOrStore = true;
         }
         public void itemHide()
@@ -39,6 +42,9 @@ namespace Amiezone
             itemName.Hide();
             cost.Hide();
             description.Hide();
+            imagePath.Hide();
+            picturePreview.Hide();
+            browseButton.Hide();
         }
 
         public void storeShow()
@@ -93,8 +99,11 @@ namespace Amiezone
                     MessageBox.Show("Please Enter a description");
                     return false;
                 }
-                // Potentially put image load from browser or set default
-
+                //Check if image path exists, defaults ifit doesn't
+                if (File.Exists(imagePath.Text) == false || isImage(Path.GetExtension(imagePath.Text)) == false)
+                {
+                    imagePath.Text = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
+                }
                 return true;
             }
             else
@@ -123,20 +132,27 @@ namespace Amiezone
         {
             itemShow();
             storeHide();
-        }       
+        }
+
         private void createButton_Click(object sender, EventArgs e)
         {
 
             if(itemOrStore == true && checkInputs() == true)
             {
-                //autogen product id based on date
-                //will need to convert ids and cut off bits and pieces of the long to convert to secs
+                // Autogen product id based on date
+                // Will need to convert ids and cut off bits and pieces of the long to convert to secs
                 //https://stackoverflow.com/questions/4873493/how-can-i-convert-number-of-seconds-since-1970-to-datetime-in-c
                 long unixSeconds = DateTimeOffset.Now.ToUnixTimeSeconds();
-                // Could also enumerate through files checking for the most recent and adding 1
-                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text, itemName.Text) + ".txt";
+
+                // Creates File
+                string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text, itemName.Text);
                 string[] info = { unixSeconds.ToString(), itemName.Text, cost.Text, description.Text };
-                System.IO.File.WriteAllLines(filePath, info);
+                System.IO.File.WriteAllLines(filePath + ".txt", info);
+
+                // Copies image from path
+                MessageBox.Show(imagePath.Text, filePath + Path.GetExtension(imagePath.Text));
+                System.IO.File.Copy(imagePath.Text, filePath + Path.GetExtension(imagePath.Text));
+
 
             }
             else if(itemOrStore == false && checkInputs() == true)
@@ -149,13 +165,53 @@ namespace Amiezone
                 Directory.CreateDirectory(filePath);
             }
         }
+
+        private void selectPicture_Click(object sender, EventArgs e)
+        {
+            //Copies chosen file for pic
+            string path;
+            OpenFileDialog imageSearch = new OpenFileDialog();
+            imageSearch.ShowDialog();
+            imageSearch.InitialDirectory = @"C:\";
+            imageSearch.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            if (imageSearch.ShowDialog() == DialogResult.OK)
+            {
+                path = imageSearch.FileName;
+                imagePath.Text = path;
+                if (File.Exists(imagePath.Text) == false || isImage(Path.GetExtension(imagePath.Text)) == false)
+                {
+                    MessageBox.Show(Path.GetExtension(imagePath.Text));
+                    MessageBox.Show("File does not exist or not a valid image format: (*.jpg, *.jpeg, *.jpe, *.jfif, *.png)");
+                    string defaultPath = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
+                    picturePreview.Image = Image.FromFile(defaultPath);
+                }
+                else
+                {
+                    imagePath.Text = path;
+                    picturePreview.Image = Image.FromFile(path);
+                }
+            }
+        }
+
+        private bool isImage(string extension)
+        {
+            string[] exts = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
+            if(exts.Contains(extension.ToLower()) == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             prev.Show();
             //renables last form
             prev.Enabled = true;
             prev.loadStores();
-
             this.Close();
         }
 

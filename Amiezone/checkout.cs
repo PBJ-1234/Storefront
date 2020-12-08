@@ -47,8 +47,8 @@ namespace Amiezone
         }
         public class check : payment
         {
-            public int RoutingNumber { get; set; }
-            public int AccountNumber { get; set; }
+            public long RoutingNumber { get; set; }
+            public long AccountNumber { get; set; }
 
             public DateTime expDate;
 
@@ -117,27 +117,31 @@ namespace Amiezone
             if(File.Exists(filePath) != true)
             {
                 StreamWriter create = File.CreateText(filePath);
-                create.WriteLine("----------------------");
-                create.WriteLine(DateTime.Now.ToString());
-                create.WriteLine("----------------------");
+                create.WriteLine("---------------------");
+                create.WriteLine(DateTime.Now.ToString("yyyy-MM-dd"));
+                create.WriteLine("---------------------");
                 create.Close();
             }
-
             //Writes to file
             int index = 0;
             StreamWriter sw = File.AppendText(filePath);
-            sw.WriteLine("User " + user.name + " Order at" + DateTime.Now.ToString("HH-MM-ss-ff"));
+            MessageBox.Show("reached");
+
+            sw.WriteLine("User " + user.name + "'s Order on: " + DateTime.Now.ToString("HH:MM:ss:ff"));
             sw.WriteLine("----------------------------------------------------------");
             foreach(DataGridViewRow currentRow in FinalGridView.Rows)
             {
                 Item currentItem = Item.GetItem(currentRow.Cells[3].Value.ToString(), currentRow.Cells[0].Value.ToString());
-                sw.WriteLine(currentItem.name + " ( " + currentItem.productID + " )");
-                sw.WriteLine("Quantity: " + FinalGridView.Rows[index].Cells[2].Value.ToString());
-                sw.WriteLine("Cost: " + currentCart.itemsInCart[index].cost.ToString());
-                sw.WriteLine("Desc: " + currentItem.description);
-                sw.WriteLine("\n----------------------------------------------------------\nOrder Returned at: " + DateTime.Now.ToString("HH-MM-ss-ff"));
+                sw.WriteLine("Item #" + (index + 1) + ":");
+                sw.WriteLine("Name: " + currentItem.name + " ID: " + currentItem.productID);
+                sw.WriteLine("Quantity: " + currentRow.Cells[2].Value.ToString());
+                sw.WriteLine("Cost: " + currentItem.cost.ToString() + "\nTotal Cost of Item: " + (currentItem.cost * (int)FinalGridView.Rows[index].Cells[2].Value));
+                sw.WriteLine("Item Description: " + currentItem.description);
+                sw.WriteLine("");
                 index++;
             }
+            sw.WriteLine("----------------------------------------------------------\nOrder Returned at: " + DateTime.Now.ToString("HH:MM:ss:ff"));
+            sw.Close();
         }
 
         private double getTotal()
@@ -186,6 +190,7 @@ namespace Amiezone
             printReciept();
             finishOrder();
         }
+
         private void WalletButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (user.wallet - double.Parse(cost.Text) >= 0)
