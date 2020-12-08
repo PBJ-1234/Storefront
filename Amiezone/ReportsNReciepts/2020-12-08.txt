@@ -1,0 +1,28 @@
+---------------------
+2020-12-08
+---------------------
+User saf's Order on: 14:12:59:57
+----------------------------------------------------------
+Item #1:
+Name: asd ID: 1607404562
+Quantity: 1
+Cost: 123
+Total Cost of Item: 123
+Item Description: asdfasdf
+
+Item #2:
+Name: saf ID: 1606804509
+Quantity: 1
+Cost: 43.12
+Total Cost of Item: 43.12
+Item Description: asd
+
+Item #3:
+Name: cra ID: 1607317455
+Quantity: 1
+Cost: 21.54
+Total Cost of Item: 21.54
+Item Description: vasdfasdf
+
+----------------------------------------------------------
+Order Returned at: 14:12:59:57

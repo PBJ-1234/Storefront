@@ -30,8 +30,6 @@
         {
             this.itemPicture = new System.Windows.Forms.PictureBox();
             this.ItemBox = new System.Windows.Forms.ListBox();
-            this.StoreBox = new System.Windows.Forms.ListBox();
-            this.CategoryBox = new System.Windows.Forms.ListBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.userInfoBox = new System.Windows.Forms.RichTextBox();
             this.createButton = new System.Windows.Forms.Button();
@@ -41,7 +39,7 @@
             this.orderButton = new System.Windows.Forms.Button();
             this.checkoutButton = new System.Windows.Forms.Button();
             this.totalLabel = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cartTable = new System.Windows.Forms.DataGridView();
             this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,8 +49,18 @@
             this.editDetailsButton = new System.Windows.Forms.Button();
             this.removeRowButton = new System.Windows.Forms.Button();
             this.storeNameLable = new System.Windows.Forms.Label();
+            this.storeTable = new System.Windows.Forms.DataGridView();
+            this.StoreColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StoreCategoryColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemTable = new System.Windows.Forms.DataGridView();
+            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StoreBox = new System.Windows.Forms.ListBox();
+            this.CategoryBox = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.itemPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cartTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.storeTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemTable)).BeginInit();
             this.SuspendLayout();
             // 
             // itemPicture
@@ -71,26 +79,10 @@
             this.ItemBox.ItemHeight = 15;
             this.ItemBox.Location = new System.Drawing.Point(553, 147);
             this.ItemBox.Name = "ItemBox";
-            this.ItemBox.Size = new System.Drawing.Size(258, 169);
+            this.ItemBox.Size = new System.Drawing.Size(244, 169);
             this.ItemBox.TabIndex = 4;
+            this.ItemBox.Visible = false;
             this.ItemBox.SelectedIndexChanged += new System.EventHandler(this.loadItem);
-            // 
-            // StoreBox
-            // 
-            this.StoreBox.FormattingEnabled = true;
-            this.StoreBox.Location = new System.Drawing.Point(553, 47);
-            this.StoreBox.Name = "StoreBox";
-            this.StoreBox.Size = new System.Drawing.Size(258, 43);
-            this.StoreBox.TabIndex = 5;
-            this.StoreBox.SelectedIndexChanged += new System.EventHandler(this.reinitializeProducts);
-            // 
-            // CategoryBox
-            // 
-            this.CategoryBox.FormattingEnabled = true;
-            this.CategoryBox.Location = new System.Drawing.Point(553, 96);
-            this.CategoryBox.Name = "CategoryBox";
-            this.CategoryBox.Size = new System.Drawing.Size(258, 17);
-            this.CategoryBox.TabIndex = 6;
             // 
             // descriptionBox
             // 
@@ -114,7 +106,7 @@
             // 
             this.createButton.Location = new System.Drawing.Point(553, 18);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(126, 23);
+            this.createButton.Size = new System.Drawing.Size(112, 23);
             this.createButton.TabIndex = 9;
             this.createButton.Text = "Create Store/Item";
             this.createButton.UseVisualStyleBackColor = true;
@@ -124,11 +116,11 @@
             // 
             this.loadButton.Location = new System.Drawing.Point(685, 18);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(126, 23);
+            this.loadButton.Size = new System.Drawing.Size(112, 23);
             this.loadButton.TabIndex = 10;
             this.loadButton.Text = "Load from file";
             this.loadButton.UseVisualStyleBackColor = true;
-            this.loadButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.loadStore);
+            this.loadButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataLoadStore);
             // 
             // storeLabel
             // 
@@ -154,17 +146,17 @@
             // 
             this.orderButton.Location = new System.Drawing.Point(553, 326);
             this.orderButton.Name = "orderButton";
-            this.orderButton.Size = new System.Drawing.Size(117, 40);
+            this.orderButton.Size = new System.Drawing.Size(103, 40);
             this.orderButton.TabIndex = 13;
             this.orderButton.Text = "Order";
             this.orderButton.UseVisualStyleBackColor = true;
-            this.orderButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.orderItem);
+            this.orderButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataOrderItem);
             // 
             // checkoutButton
             // 
             this.checkoutButton.Location = new System.Drawing.Point(553, 376);
             this.checkoutButton.Name = "checkoutButton";
-            this.checkoutButton.Size = new System.Drawing.Size(258, 40);
+            this.checkoutButton.Size = new System.Drawing.Size(244, 40);
             this.checkoutButton.TabIndex = 14;
             this.checkoutButton.Text = "Checkout";
             this.checkoutButton.UseVisualStyleBackColor = true;
@@ -180,23 +172,23 @@
             this.totalLabel.TabIndex = 15;
             this.totalLabel.Text = "Total: $";
             // 
-            // dataGridView1
+            // cartTable
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cartTable.AllowUserToAddRows = false;
+            this.cartTable.AllowUserToDeleteRows = false;
+            this.cartTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cartTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ItemName,
             this.ItemCost,
             this.ItemAmount,
             this.StoreName});
-            this.dataGridView1.Location = new System.Drawing.Point(201, 20);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(341, 131);
-            this.dataGridView1.TabIndex = 16;
+            this.cartTable.Location = new System.Drawing.Point(201, 20);
+            this.cartTable.MultiSelect = false;
+            this.cartTable.Name = "cartTable";
+            this.cartTable.ReadOnly = true;
+            this.cartTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.cartTable.Size = new System.Drawing.Size(341, 131);
+            this.cartTable.TabIndex = 16;
             // 
             // ItemName
             // 
@@ -226,7 +218,7 @@
             // 
             this.removeItemButton.Location = new System.Drawing.Point(679, 326);
             this.removeItemButton.Name = "removeItemButton";
-            this.removeItemButton.Size = new System.Drawing.Size(63, 40);
+            this.removeItemButton.Size = new System.Drawing.Size(49, 40);
             this.removeItemButton.TabIndex = 17;
             this.removeItemButton.Text = "Remove Item";
             this.removeItemButton.UseVisualStyleBackColor = true;
@@ -256,7 +248,7 @@
             // 
             this.removeRowButton.Location = new System.Drawing.Point(748, 326);
             this.removeRowButton.Name = "removeRowButton";
-            this.removeRowButton.Size = new System.Drawing.Size(63, 40);
+            this.removeRowButton.Size = new System.Drawing.Size(49, 40);
             this.removeRowButton.TabIndex = 20;
             this.removeRowButton.Text = "Remove Row";
             this.removeRowButton.UseVisualStyleBackColor = true;
@@ -265,23 +257,99 @@
             // storeNameLable
             // 
             this.storeNameLable.AutoSize = true;
-            this.storeNameLable.Location = new System.Drawing.Point(700, 125);
+            this.storeNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.storeNameLable.Location = new System.Drawing.Point(688, 117);
             this.storeNameLable.Name = "storeNameLable";
-            this.storeNameLable.Size = new System.Drawing.Size(10, 13);
+            this.storeNameLable.Size = new System.Drawing.Size(15, 24);
             this.storeNameLable.TabIndex = 21;
             this.storeNameLable.Text = " ";
+            // 
+            // storeTable
+            // 
+            this.storeTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.storeTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.StoreColumn,
+            this.StoreCategoryColumn});
+            this.storeTable.Location = new System.Drawing.Point(553, 47);
+            this.storeTable.MultiSelect = false;
+            this.storeTable.Name = "storeTable";
+            this.storeTable.ReadOnly = true;
+            this.storeTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.storeTable.Size = new System.Drawing.Size(244, 69);
+            this.storeTable.TabIndex = 22;
+            this.storeTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataReinitializeProducts);
+            // 
+            // StoreColumn
+            // 
+            this.StoreColumn.HeaderText = "Store:";
+            this.StoreColumn.Name = "StoreColumn";
+            this.StoreColumn.ReadOnly = true;
+            // 
+            // StoreCategoryColumn
+            // 
+            this.StoreCategoryColumn.HeaderText = "Category:";
+            this.StoreCategoryColumn.Name = "StoreCategoryColumn";
+            this.StoreCategoryColumn.ReadOnly = true;
+            // 
+            // itemTable
+            // 
+            this.itemTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ProductName,
+            this.ProductCost});
+            this.itemTable.Location = new System.Drawing.Point(553, 144);
+            this.itemTable.MultiSelect = false;
+            this.itemTable.Name = "itemTable";
+            this.itemTable.ReadOnly = true;
+            this.itemTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.itemTable.Size = new System.Drawing.Size(244, 172);
+            this.itemTable.TabIndex = 23;
+            this.itemTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataLoadItem);
+            // 
+            // ProductName
+            // 
+            this.ProductName.HeaderText = "Name:";
+            this.ProductName.Name = "ProductName";
+            this.ProductName.ReadOnly = true;
+            // 
+            // ProductCost
+            // 
+            this.ProductCost.HeaderText = "Cost:";
+            this.ProductCost.Name = "ProductCost";
+            this.ProductCost.ReadOnly = true;
+            // 
+            // StoreBox
+            // 
+            this.StoreBox.FormattingEnabled = true;
+            this.StoreBox.Location = new System.Drawing.Point(553, 47);
+            this.StoreBox.Name = "StoreBox";
+            this.StoreBox.Size = new System.Drawing.Size(244, 43);
+            this.StoreBox.TabIndex = 5;
+            this.StoreBox.Visible = false;
+            this.StoreBox.SelectedIndexChanged += new System.EventHandler(this.reinitializeProducts);
+            // 
+            // CategoryBox
+            // 
+            this.CategoryBox.FormattingEnabled = true;
+            this.CategoryBox.Location = new System.Drawing.Point(553, 96);
+            this.CategoryBox.Name = "CategoryBox";
+            this.CategoryBox.Size = new System.Drawing.Size(244, 17);
+            this.CategoryBox.TabIndex = 6;
+            this.CategoryBox.Visible = false;
             // 
             // storepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 450);
+            this.Controls.Add(this.itemTable);
+            this.Controls.Add(this.storeTable);
             this.Controls.Add(this.storeNameLable);
             this.Controls.Add(this.removeRowButton);
             this.Controls.Add(this.editDetailsButton);
             this.Controls.Add(this.logoutButton);
             this.Controls.Add(this.removeItemButton);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.cartTable);
             this.Controls.Add(this.totalSoFarLabel);
             this.Controls.Add(this.totalLabel);
             this.Controls.Add(this.checkoutButton);
@@ -298,7 +366,9 @@
             this.Name = "storepage";
             this.Text = "Storefront";
             ((System.ComponentModel.ISupportInitialize)(this.itemPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cartTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.storeTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,8 +378,6 @@
 
         private System.Windows.Forms.PictureBox itemPicture;
         private System.Windows.Forms.ListBox ItemBox;
-        private System.Windows.Forms.ListBox StoreBox;
-        private System.Windows.Forms.ListBox CategoryBox;
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.RichTextBox userInfoBox;
         private System.Windows.Forms.Button createButton;
@@ -319,7 +387,7 @@
         private System.Windows.Forms.Button orderButton;
         private System.Windows.Forms.Button checkoutButton;
         private System.Windows.Forms.Label totalLabel;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView cartTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemCost;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemAmount;
@@ -329,5 +397,13 @@
         private System.Windows.Forms.Button editDetailsButton;
         private System.Windows.Forms.Button removeRowButton;
         private System.Windows.Forms.Label storeNameLable;
+        private System.Windows.Forms.DataGridView storeTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StoreColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StoreCategoryColumn;
+        private System.Windows.Forms.DataGridView itemTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductCost;
+        private System.Windows.Forms.ListBox StoreBox;
+        private System.Windows.Forms.ListBox CategoryBox;
     }
 }

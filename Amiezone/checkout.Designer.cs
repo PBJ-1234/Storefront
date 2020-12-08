@@ -60,7 +60,7 @@
             this.bankcheckButton.TabIndex = 2;
             this.bankcheckButton.Text = "Bank Check";
             this.bankcheckButton.UseVisualStyleBackColor = true;
-            this.bankcheckButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BankCheckButton_MouseClick);
+            this.bankcheckButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.useBankCheck);
             // 
             // returnButton
             // 
@@ -70,7 +70,7 @@
             this.returnButton.TabIndex = 3;
             this.returnButton.Text = "Go Back";
             this.returnButton.UseVisualStyleBackColor = true;
-            this.returnButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.returnButton_MouseClick);
+            this.returnButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.returnToStore);
             // 
             // cost
             // 
@@ -89,7 +89,7 @@
             this.cashButton.TabIndex = 5;
             this.cashButton.Text = "Checkout";
             this.cashButton.UseVisualStyleBackColor = true;
-            this.cashButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.WalletButton_MouseClick);
+            this.cashButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.useWallet);
             // 
             // creditCardButton
             // 
@@ -99,7 +99,7 @@
             this.creditCardButton.TabIndex = 6;
             this.creditCardButton.Text = "Credit Card";
             this.creditCardButton.UseVisualStyleBackColor = true;
-            this.creditCardButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CreditButton_MouseClick);
+            this.creditCardButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.useCreditCard);
             // 
             // label1
             // 

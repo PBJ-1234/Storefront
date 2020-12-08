@@ -27,15 +27,20 @@ namespace Amiezone
             cost.Text = getTotal().ToString();
         }
 
-        // Rework cloing 
+        // Copies store table to checkout 
         private void CopyDataGridView(DataGridView originalGrid)
         {
-            for (int x = 0; x < originalGrid.Rows.Count; x++)
+            if(originalGrid.Rows.Count > 0)
             {
-                FinalGridView.Rows[x].Cells[0].Value = originalGrid.Rows[x].Cells[0].Value;
-                FinalGridView.Rows[x].Cells[1].Value = originalGrid.Rows[x].Cells[1].Value;
-                FinalGridView.Rows[x].Cells[2].Value = originalGrid.Rows[x].Cells[2].Value;
-                FinalGridView.Rows[x].Cells[3].Value = originalGrid.Rows[x].Cells[3].Value;
+                FinalGridView.Rows[0].Cells[0].Value = originalGrid.Rows[0].Cells[0].Value;
+                FinalGridView.Rows[0].Cells[1].Value = originalGrid.Rows[0].Cells[1].Value;
+                FinalGridView.Rows[0].Cells[2].Value = originalGrid.Rows[0].Cells[2].Value;
+                FinalGridView.Rows[0].Cells[3].Value = originalGrid.Rows[0].Cells[3].Value;
+            }
+            // Adds a new row after first row is made
+            for (int x = 1; x < originalGrid.Rows.Count; x++)
+            {
+                FinalGridView.Rows.Add(originalGrid.Rows[x].Cells[0].Value, originalGrid.Rows[x].Cells[1].Value, originalGrid.Rows[x].Cells[2].Value, originalGrid.Rows[x].Cells[3].Value);
             }
         }
         
@@ -131,7 +136,7 @@ namespace Amiezone
             sw.WriteLine("----------------------------------------------------------");
             foreach(DataGridViewRow currentRow in FinalGridView.Rows)
             {
-                Item currentItem = Item.GetItem(currentRow.Cells[3].Value.ToString(), currentRow.Cells[0].Value.ToString());
+                Item currentItem = Item.getItem(currentRow.Cells[3].Value.ToString(), currentRow.Cells[0].Value.ToString());
                 sw.WriteLine("Item #" + (index + 1) + ":");
                 sw.WriteLine("Name: " + currentItem.name + " ID: " + currentItem.productID);
                 sw.WriteLine("Quantity: " + currentRow.Cells[2].Value.ToString());
@@ -154,12 +159,12 @@ namespace Amiezone
             return cost;
         }
 
-        private void BankCheckButton_MouseClick(object sender, MouseEventArgs e)
+        private void useBankCheck(object sender, MouseEventArgs e)
         {
-            bank thing = new bank(user.name, user.ID);
+            bank newCheck = new bank(user.name, user.ID);
 
             // Checks that it isn't done
-            if (thing.authorized() == true)
+            if (newCheck.authorized() == true)
             {
                 MessageBox.Show("Banked");
             }
@@ -172,7 +177,7 @@ namespace Amiezone
             finishOrder();
         }
 
-        private void CreditButton_MouseClick(object sender, MouseEventArgs e)
+        private void useCreditCard(object sender, MouseEventArgs e)
         {
             check newCheck = new check();
             newCheck.AccountNumber = user.ID;
@@ -191,7 +196,7 @@ namespace Amiezone
             finishOrder();
         }
 
-        private void WalletButton_MouseClick(object sender, MouseEventArgs e)
+        private void useWallet(object sender, MouseEventArgs e)
         {
             if (user.wallet - double.Parse(cost.Text) >= 0)
             {
@@ -206,7 +211,7 @@ namespace Amiezone
             printReciept();
             finishOrder();
         }
-        private void returnButton_MouseClick(object sender, MouseEventArgs e)
+        private void returnToStore(object sender, MouseEventArgs e)
         {
             this.Close();
             prev.Show();

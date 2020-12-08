@@ -85,7 +85,7 @@ namespace Amiezone
             public string description;
             public string itemFilePath;
 
-            public static Item GetItem(string store, string name)
+            public static Item getItem(string store, string name)
             {
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", store, name) + ".txt";
                 
@@ -114,7 +114,7 @@ namespace Amiezone
             public string storeName;
 
             // Updates/checks the list than returns the list
-            public void getItems()
+            public void getAllItems()
             {
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName);
                 string[] files = System.IO.Directory.GetFiles(filePath, "*.txt");

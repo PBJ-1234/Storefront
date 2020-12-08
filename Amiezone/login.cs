@@ -18,7 +18,7 @@ namespace Amiezone
             InitializeComponent();
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private void loginStore(object sender, EventArgs e)
         {
             bool exists = false;
             User currentUser = new User();
@@ -60,7 +60,7 @@ namespace Amiezone
             store.Show();            
         }
 
-        private void registerButton_Click(object sender, EventArgs e)
+        private void gotoRegisterPage(object sender, EventArgs e)
         {
             Register regPage = new Register(this);
             regPage.Show();

@@ -44,7 +44,7 @@
             this.LoginButton.TabIndex = 0;
             this.LoginButton.Text = "Login";
             this.LoginButton.UseVisualStyleBackColor = true;
-            this.LoginButton.Click += new System.EventHandler(this.loginButton_Click);
+            this.LoginButton.Click += new System.EventHandler(this.loginStore);
             // 
             // UsernameBox
             // 
@@ -86,7 +86,7 @@
             this.RegisterButton.TabIndex = 7;
             this.RegisterButton.Text = "Register";
             this.RegisterButton.UseVisualStyleBackColor = true;
-            this.RegisterButton.Click += new System.EventHandler(this.registerButton_Click);
+            this.RegisterButton.Click += new System.EventHandler(this.gotoRegisterPage);
             // 
             // login
             // 
