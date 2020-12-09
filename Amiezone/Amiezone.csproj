@@ -71,11 +71,11 @@
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
     <Compile Include="storeClasses.cs" />
-    <Compile Include="storepage.cs">
+    <Compile Include="StorePage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="storepage.Designer.cs">
-      <DependentUpon>storepage.cs</DependentUpon>
+    <Compile Include="StorePage.Designer.cs">
+      <DependentUpon>StorePage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,8 +100,8 @@
     <EmbeddedResource Include="Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="storepage.resx">
-      <DependentUpon>storepage.cs</DependentUpon>
+    <EmbeddedResource Include="StorePage.resx">
+      <DependentUpon>StorePage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

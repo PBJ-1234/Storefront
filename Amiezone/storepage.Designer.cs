@@ -1,6 +1,6 @@
 ﻿namespace Amiezone
 {
-    partial class storepage
+    partial class StorePage
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.itemPicture = new System.Windows.Forms.PictureBox();
-            this.ItemBox = new System.Windows.Forms.ListBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.userInfoBox = new System.Windows.Forms.RichTextBox();
             this.createButton = new System.Windows.Forms.Button();
@@ -55,8 +54,6 @@
             this.itemTable = new System.Windows.Forms.DataGridView();
             this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProductCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StoreBox = new System.Windows.Forms.ListBox();
-            this.CategoryBox = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.itemPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cartTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeTable)).BeginInit();
@@ -71,18 +68,6 @@
             this.itemPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.itemPicture.TabIndex = 3;
             this.itemPicture.TabStop = false;
-            // 
-            // ItemBox
-            // 
-            this.ItemBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ItemBox.FormattingEnabled = true;
-            this.ItemBox.ItemHeight = 15;
-            this.ItemBox.Location = new System.Drawing.Point(553, 147);
-            this.ItemBox.Name = "ItemBox";
-            this.ItemBox.Size = new System.Drawing.Size(244, 169);
-            this.ItemBox.TabIndex = 4;
-            this.ItemBox.Visible = false;
-            this.ItemBox.SelectedIndexChanged += new System.EventHandler(this.loadItem);
             // 
             // descriptionBox
             // 
@@ -318,25 +303,6 @@
             this.ProductCost.Name = "ProductCost";
             this.ProductCost.ReadOnly = true;
             // 
-            // StoreBox
-            // 
-            this.StoreBox.FormattingEnabled = true;
-            this.StoreBox.Location = new System.Drawing.Point(553, 47);
-            this.StoreBox.Name = "StoreBox";
-            this.StoreBox.Size = new System.Drawing.Size(244, 43);
-            this.StoreBox.TabIndex = 5;
-            this.StoreBox.Visible = false;
-            this.StoreBox.SelectedIndexChanged += new System.EventHandler(this.reinitializeProducts);
-            // 
-            // CategoryBox
-            // 
-            this.CategoryBox.FormattingEnabled = true;
-            this.CategoryBox.Location = new System.Drawing.Point(553, 96);
-            this.CategoryBox.Name = "CategoryBox";
-            this.CategoryBox.Size = new System.Drawing.Size(244, 17);
-            this.CategoryBox.TabIndex = 6;
-            this.CategoryBox.Visible = false;
-            // 
             // storepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,9 +326,6 @@
             this.Controls.Add(this.itemPicture);
             this.Controls.Add(this.userInfoBox);
             this.Controls.Add(this.descriptionBox);
-            this.Controls.Add(this.CategoryBox);
-            this.Controls.Add(this.StoreBox);
-            this.Controls.Add(this.ItemBox);
             this.Name = "storepage";
             this.Text = "Storefront";
             ((System.ComponentModel.ISupportInitialize)(this.itemPicture)).EndInit();
@@ -377,7 +340,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox itemPicture;
-        private System.Windows.Forms.ListBox ItemBox;
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.RichTextBox userInfoBox;
         private System.Windows.Forms.Button createButton;
@@ -403,7 +365,5 @@
         private System.Windows.Forms.DataGridView itemTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductCost;
-        private System.Windows.Forms.ListBox StoreBox;
-        private System.Windows.Forms.ListBox CategoryBox;
     }
 }

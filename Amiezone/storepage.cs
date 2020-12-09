@@ -11,15 +11,18 @@ using System.Windows.Forms;
 
 namespace Amiezone
 {
-    public partial class storepage : Form
+    public partial class StorePage : Form
     {
         internal User currentUser;
         ShoppingCart currentCart;
+        //Didn't see much use, kinda forgot about it
         Storefront currentStores;
 
         public static DataGridView passingGridTable;
         public static double runningFunds;
-        public storepage(User newUser)
+
+        //Behavior when logging in
+        public StorePage(User newUser)
         {
             InitializeComponent();
             currentUser = newUser;
@@ -27,10 +30,12 @@ namespace Amiezone
             reinitalizeUser();
             loadStores();
         }
-        public storepage(User newUser, ShoppingCart cart)
+
+        //Behavior when returning to page
+        public StorePage(User curUser, ShoppingCart cart)
         {
             InitializeComponent();
-            currentUser = newUser;
+            currentUser = curUser;
             currentCart = cart;
             reinitalizeUser();
             loadStores();
@@ -76,12 +81,15 @@ namespace Amiezone
             Storefront dataFront = new Storefront();
             storeTable.Rows.Clear();
 
+
             string dataFilePath = Path.Combine(storeClasses.generalFilePath, "Stores");
             string[] dataDirectories = Directory.GetDirectories(dataFilePath);
             dataFront.rebuildStores();
             currentStores = dataFront;
+
             foreach(string x in dataDirectories)
             {
+                //Does initial case then normal case
                 string[] info = Directory.GetDirectories(x);
                 if(storeTable.Rows[0].Cells[0].Value == null)
                 {
@@ -95,14 +103,6 @@ namespace Amiezone
         }
 
         // Loads in store items
-        
-        private void reinitializeProducts(object sender, EventArgs e)
-        {
-
-        }
-        
-        
-        //Data Grid Version
         private void dataReinitializeProducts(object sender, DataGridViewCellEventArgs e)
         {
             if (storeTable.SelectedRows == null)
@@ -147,20 +147,12 @@ namespace Amiezone
 
 
         // Loads in the selected item from the list into the description
-        
-        private void loadItem(object sender, EventArgs e)
-        {
-
-        }
-
         private void dataLoadItem(object sender, DataGridViewCellEventArgs e)
         {
-            //Data version
             if (itemTable.SelectedRows == null || itemTable.SelectedRows[0].Cells[0].Value == null)
             {
                 return;
             }
-            descriptionBox.Text = itemTable.SelectedRows[0].Cells[0].Value.ToString();
 
             string x = storeTable.SelectedRows[0].Cells[0].Value.ToString();
             string y = itemTable.SelectedRows[0].Cells[0].Value.ToString();
@@ -176,13 +168,7 @@ namespace Amiezone
             loadNewPic(itemPicture, imagePath);
         }
 
-        // Function to get the store through load
-        
-        private void loadStore(object sender, MouseEventArgs e)
-        {
-
-        }
-        
+        // Function to get the store through load button
         private void dataLoadStore(object sender, MouseEventArgs e)
         {
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
@@ -192,13 +178,11 @@ namespace Amiezone
             // Second Condition checks if folder is in the project
             if (folderDialog.ShowDialog() == DialogResult.OK && folderDialog.SelectedPath.Contains(storeClasses.generalFilePath))
             {
-                // Clears item list
-                string folderPath;
-                folderPath = folderDialog.SelectedPath;
-
+                // Clears item list then rebuilds
                 itemTable.Rows.Clear();
                 storeNameLable.Text = storeTable.SelectedRows[0].Cells[0].Value.ToString();
 
+                //Builds table
                 string dataPath = Path.Combine(storeClasses.generalFilePath, "Stores", storeNameLable.Text);
                 foreach (string itemFile in Directory.EnumerateFiles(dataPath, "*.txt"))
                 {
@@ -209,6 +193,7 @@ namespace Amiezone
             }
         }
 
+        // Opens up makeItems form
         private void gotoCreateform(object sender, MouseEventArgs e)
         {
             makeItems createForm = new makeItems(this);
@@ -217,15 +202,7 @@ namespace Amiezone
             this.Enabled = false;
         }
 
-        //Adds item to cart and updates table
-        /*
-        private void orderItem(object sender, MouseEventArgs e)
-        {
-            
-        }
-        */
-
-        //Data Grid
+        // Adds item to cart and updates table
         private void dataOrderItem(object sender, MouseEventArgs e)
         {
             // User did select an item
@@ -317,8 +294,5 @@ namespace Amiezone
             this.Enabled = false;
             check.Show();
         }
-
     }
-
-
 }

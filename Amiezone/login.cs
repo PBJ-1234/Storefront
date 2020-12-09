@@ -13,12 +13,14 @@ namespace Amiezone
 {
     public partial class login : Form
     {
+        private static int tries = 0;
         public login()
         {
             InitializeComponent();
         }
 
-        private void loginStore(object sender, EventArgs e)
+        //Grabs info, checks for existance, and returns file or sends error
+        private void loginStore(object sender, MouseEventArgs e)
         {
             bool exists = false;
             User currentUser = new User();
@@ -45,6 +47,12 @@ namespace Amiezone
                     else
                     {
                         MessageBox.Show("Please retry login.");
+                        tries++;
+                        if(tries > 3)
+                        {
+                            MessageBox.Show("Too many tries attempted, now exiting...");
+                            Environment.Exit(0);
+                        }
                         return;
                     }
                 }
@@ -55,12 +63,12 @@ namespace Amiezone
                 return;
             }
             this.Hide();
-            storepage store = new storepage(currentUser);
+            StorePage store = new StorePage(currentUser);
             store.Closed += (s, args) => this.Close();
             store.Show();            
         }
 
-        private void gotoRegisterPage(object sender, EventArgs e)
+        private void gotoRegisterPage(object sender, MouseEventArgs e)
         {
             Register regPage = new Register(this);
             regPage.Show();

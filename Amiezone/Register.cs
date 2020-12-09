@@ -14,14 +14,14 @@ namespace Amiezone
     public partial class Register : Form
     {
         login loginPage;
-        storepage storefront;
+        StorePage storefront;
         User viewingUser;
         public Register(login prevPage)
         {
             loginPage = prevPage;
             InitializeComponent();
         }
-        public Register(storepage prevPage, User vUser)
+        public Register(StorePage prevPage, User vUser)
         {
             storefront = prevPage;
             viewingUser = vUser;

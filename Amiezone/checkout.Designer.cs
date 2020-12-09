@@ -34,7 +34,6 @@
             this.cost = new System.Windows.Forms.Label();
             this.cashButton = new System.Windows.Forms.Button();
             this.creditCardButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.FinalGridView = new System.Windows.Forms.DataGridView();
             this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,9 +45,10 @@
             // totalLabel
             // 
             this.totalLabel.AutoSize = true;
-            this.totalLabel.Location = new System.Drawing.Point(300, 118);
+            this.totalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.totalLabel.Location = new System.Drawing.Point(108, 339);
             this.totalLabel.Name = "totalLabel";
-            this.totalLabel.Size = new System.Drawing.Size(43, 13);
+            this.totalLabel.Size = new System.Drawing.Size(105, 31);
             this.totalLabel.TabIndex = 1;
             this.totalLabel.Text = "Total: $";
             // 
@@ -75,9 +75,10 @@
             // cost
             // 
             this.cost.AutoSize = true;
-            this.cost.Location = new System.Drawing.Point(340, 118);
+            this.cost.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cost.Location = new System.Drawing.Point(209, 339);
             this.cost.Name = "cost";
-            this.cost.Size = new System.Drawing.Size(28, 13);
+            this.cost.Size = new System.Drawing.Size(67, 31);
             this.cost.TabIndex = 4;
             this.cost.Text = "0.00";
             // 
@@ -100,16 +101,6 @@
             this.creditCardButton.Text = "Credit Card";
             this.creditCardButton.UseVisualStyleBackColor = true;
             this.creditCardButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.useCreditCard);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(300, 72);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
-            this.label1.Visible = false;
             // 
             // FinalGridView
             // 
@@ -150,7 +141,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.FinalGridView);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.creditCardButton);
             this.Controls.Add(this.cashButton);
             this.Controls.Add(this.cost);
@@ -172,7 +162,6 @@
         private System.Windows.Forms.Button cashButton;
         private System.Windows.Forms.Button creditCardButton;
         private System.Windows.Forms.Button bankcheckButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView FinalGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemCost;

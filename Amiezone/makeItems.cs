@@ -16,14 +16,14 @@ namespace Amiezone
         // True: item being made
         // False: store being made
         private Boolean itemOrStore;
-        storepage prev;
-        public makeItems(storepage restore)
+        StorePage prev;
+        public makeItems(StorePage restore)
         {
             InitializeComponent();
             hideEverything();
             prev = restore;
         }
-
+        // Just a bunch of mini methods to selectively choose what to hide/show
         public void itemShow()
         {
             itemStore.Show();
@@ -66,6 +66,18 @@ namespace Amiezone
             storeHide();
             createButton.Hide();
         }
+
+        private void createStore(object sender, MouseEventArgs e)
+        {
+            storeShow();
+            itemHide();
+        }
+        private void createItem(object sender, MouseEventArgs e)
+        {
+            itemShow();
+            storeHide();
+        }
+        // Checks itemstore state then drills down each check to confirm order
         public Boolean checkInputs()
         {
             
@@ -78,8 +90,8 @@ namespace Amiezone
                     MessageBox.Show("Store does not exist");
                     return false;
                 }
-                itemPath = Path.Combine(itemPath, itemName.Text);
                 //Check if item exists
+                itemPath = Path.Combine(itemPath, itemName.Text) + ".txt";
                 if (File.Exists(itemPath) == true)
                 {
                     MessageBox.Show("Please do not reuse item names");
@@ -104,12 +116,13 @@ namespace Amiezone
                 {
                     imagePath.Text = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
                 }
+
                 return true;
             }
             else
             {
-                string storePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 //Check if store exists and is valid
+                string storePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 if (Directory.Exists(storePath) == true)
                 {
                     return false;
@@ -123,40 +136,30 @@ namespace Amiezone
                 return true;
             }
         }
-        private void CreateStore(object sender, EventArgs e)
-        {
-            storeShow();
-            itemHide();
-        }
-        private void CreateItem(object sender, EventArgs e)
-        {
-            itemShow();
-            storeHide();
-        }
 
-        private void createButton_Click(object sender, EventArgs e)
+        // Actual function that creates file
+        private void createObject(object sender, MouseEventArgs e)
         {
 
             if(itemOrStore == true && checkInputs() == true)
             {
                 // Autogen product id based on date
-                // Will need to convert ids and cut off bits and pieces of the long to convert to secs
-                //https://stackoverflow.com/questions/4873493/how-can-i-convert-number-of-seconds-since-1970-to-datetime-in-c
                 long unixSeconds = DateTimeOffset.Now.ToUnixTimeSeconds();
-
+                // Rounds cost for proper entry
+                decimal costEdit = decimal.Parse(cost.Text);
+                costEdit = Math.Round(costEdit, 2);
                 // Creates File
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", itemStore.Text, itemName.Text);
-                string[] info = { unixSeconds.ToString(), itemName.Text, cost.Text, description.Text };
+                string[] info = { unixSeconds.ToString(), itemName.Text, costEdit.ToString(), description.Text };
                 System.IO.File.WriteAllLines(filePath + ".txt", info);
-
-                // Copies image from path
+                // Copies image from path chosen
                 System.IO.File.Copy(imagePath.Text, filePath + Path.GetExtension(imagePath.Text));
 
 
             }
             else if(itemOrStore == false && checkInputs() == true)
             {
-                //Create store die
+                //Create store directory
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", storeName.Text);
                 Directory.CreateDirectory(filePath);
                 //Creates folder with name of category
@@ -164,15 +167,13 @@ namespace Amiezone
                 Directory.CreateDirectory(filePath);
             }
         }
-
-        private void selectPicture_Click(object sender, EventArgs e)
+        // Opens up file browser for user to search for image then copies to items location
+        private void selectPicture(object sender, MouseEventArgs e)
         {
-            //Copies chosen file for pic
             string path;
             OpenFileDialog imageSearch = new OpenFileDialog();
             imageSearch.ShowDialog();
             imageSearch.InitialDirectory = @"C:\";
-            //imageSearch.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             imageSearch.Filter = storeClasses.imageFilter;
 
             if (imageSearch.ShowDialog() == DialogResult.OK)
@@ -193,10 +194,9 @@ namespace Amiezone
                 }
             }
         }
-
+        // Helper for selectPicture to see if has valid extension, (check storeClasses for exts list)
         private bool isImage(string extension)
         {
-            
             if(storeClasses.exts.Contains(extension.ToLower()) == true)
             {
                 return true;
@@ -206,10 +206,10 @@ namespace Amiezone
                 return false;
             }
         }
-        private void button4_Click(object sender, EventArgs e)
+        // Returns to store
+        private void returnPage(object sender, MouseEventArgs e)
         {
             prev.Show();
-            //renables last form
             prev.Enabled = true;
             prev.loadStores();
             this.Close();

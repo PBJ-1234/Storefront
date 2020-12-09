@@ -14,16 +14,14 @@ namespace Amiezone
     {
         User user;
         ShoppingCart currentCart;
-        storepage prev;
-        public checkout(User newUser, ShoppingCart cart, storepage store)
+        StorePage prev;
+        public checkout(User newUser, ShoppingCart cart, StorePage store)
         {
             user = newUser;
             currentCart = cart;
-            // https://stackoverflow.com/questions/11165537/passing-textboxs-text-to-another-form-in-c
-            // https://www.youtube.com/watch?v=-4sedzHtsqs
             prev = store;
             InitializeComponent();
-            CopyDataGridView(storepage.passingGridTable);
+            CopyDataGridView(StorePage.passingGridTable);
             cost.Text = getTotal().ToString();
         }
 
@@ -46,12 +44,12 @@ namespace Amiezone
         
 
         // Payment methods
-        public abstract class payment
+        public abstract class Payment
         {
             public double amount;
             public string filePath = Path.Combine(storeClasses.generalFilePath, "ReportsNReciepts", DateTime.Now.ToString("yyyy-MM-dd") + " Income") + ".txt";
             public string[] info;
-            public void writePayments(string method, payment type)
+            public void writePayments(string method, Payment type)
             {   
                 if(File.Exists(filePath) != true)
                 {
@@ -79,20 +77,24 @@ namespace Amiezone
                     report.WriteLine("Final:\n" + total.ToString());
                     report.Close();
                 }
-
             }
         }
-        // Check
-        public class check : payment
+        // Card
+        public class Card : Payment
         {
             public long RoutingNumber { get; set; }
             public long AccountNumber { get; set; }
-
             public DateTime expDate;
 
-            public Boolean Authorized(check daCheck)
+            public Card(long r, long a)
             {
-                if (DateTime.Now > expDate)
+                this.RoutingNumber = r;
+                this.AccountNumber = a;
+            }
+
+            public Boolean Authorized(Card daCheck)
+            {
+                if (DateTime.Now < expDate)
                 {
                     return false;
                 }
@@ -102,27 +104,65 @@ namespace Amiezone
                     {
                         return false;
                     }
-                    writePayments("Check", daCheck);
+                    writePayments("Card", daCheck);
                     return true;
                 }
             }
         }
-        public class bank : payment
+        //Wallet
+        public class Wallet : Payment
+        {
+            // Authorizes then edits file if true
+            public Boolean Authorized(User user, double cost, Wallet daWallet)
+            {
+                if (user.wallet - cost >= 0)
+                {
+                    user.wallet = user.wallet - cost;
+
+                    string projectPath = storeClasses.generalFilePath;
+                    projectPath = Path.Combine(projectPath, "Users", user.name) + ".txt";
+                    string[] info = System.IO.File.ReadAllLines(projectPath);
+
+                    user.password = info[0];
+                    user.ID = long.Parse(info[1]);
+                    user.address = info[3];
+
+                    //Rebuilds user file
+                    File.Delete(projectPath);
+                    StreamWriter create = File.CreateText(projectPath);
+
+                    create.WriteLine(user.password);
+                    create.WriteLine(user.ID);
+                    create.WriteLine(user.wallet);
+                    create.WriteLine(user.address);
+                    create.Close();
+                    writePayments("Wallet", daWallet);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Insufficient Funds");
+                    return false;
+                }
+            }
+        }
+        //Bank Check
+        public class Bank : Payment
         {
             public string name;
             public long bankID;
 
-            public bank(string n, long id)
+            public Bank(string n, long id)
             {
                 name = n;
                 bankID = id;
             }
 
-            public Boolean authorized(bank daBank)
+            public Boolean Authorized(Bank daBank)
             {
                 if (bankID % 2 == 0)
                 {
-                    writePayments("Bank", daBank);
+                    writePayments("Check", daBank);
                     return true;
                 }
                 else
@@ -139,15 +179,9 @@ namespace Amiezone
             {
                 lbl.Hide();
             }
-            label1.Show();
             returnButton.Show();
             FinalGridView.Rows.Clear();
 
-            //Refresh storepage
-            this.Close();
-            prev.Show();
-            prev.Enabled = true;
-            prev.reinitalizeUser();
         }
 
         private void printReciept()
@@ -194,79 +228,61 @@ namespace Amiezone
                 cost = cost + ((double)(currentRow.Cells[1].Value) * (int)(currentRow.Cells[2].Value));
             }
             return cost;
-        }
-
-        private void useBankCheck(object sender, MouseEventArgs e)
-        {
-            bank newCheck = new bank(user.name, user.ID);
-            newCheck.amount = double.Parse(cost.Text);
-            if (newCheck.authorized(newCheck) == true)
-            {
-                MessageBox.Show("Banked");
-            }
-            else
-            {
-                MessageBox.Show("Check Bounced");
-                return;
-            }
-            printReciept();
-            finishOrder();
-        }
-
-        private void useCreditCard(object sender, MouseEventArgs e)
-        {
-            check newCard = new check();
-            newCard.AccountNumber = user.ID;
-            newCard.RoutingNumber = user.ID / 2;
-            newCard.amount = double.Parse(cost.Text);
-            if(newCard.Authorized(newCard) == true)
-            {
-
-                MessageBox.Show("Card Accepted");
-            }
-            else
-            {
-                MessageBox.Show("Denied");
-                return;
-            }
-            printReciept();
-            finishOrder();
-        }
-
+        }        
         private void useWallet(object sender, MouseEventArgs e)
         {
             // Edit for getting just wallet line later
-            if (user.wallet - double.Parse(cost.Text) >= 0)
+            Wallet newWallet = new Wallet();
+            if (newWallet.Authorized(user, double.Parse(cost.Text), newWallet) == true)
             {
-                user.wallet = user.wallet - (double.Parse(cost.Text));
-
-                string projectPath = storeClasses.generalFilePath;
-                projectPath = Path.Combine(projectPath, "Users", user.name) + ".txt";
-                string[] info = System.IO.File.ReadAllLines(projectPath);
-
-                user.password = info[0];
-                user.ID = long.Parse(info[1]);
-                user.address = info[3];
-
-                //Rebuilds user file
-                File.Delete(projectPath);
-                StreamWriter create = File.CreateText(projectPath);
-
-                create.WriteLine(user.password);
-                create.WriteLine(user.ID);
-                create.WriteLine(user.wallet);
-                create.WriteLine(user.address);
-                create.Close();
-                prev.reinitalizeUser();
+                printReciept();
+                finishOrder();
             }
             else
             {
                 MessageBox.Show("Insufficient Funds");
                 return;
             }
-            printReciept();
-            finishOrder();
+
         }
+        private void useCreditCard(object sender, MouseEventArgs e)
+        {
+            Card newCard = new Card(user.ID, user.ID / 2);
+
+            newCard.amount = double.Parse(cost.Text);
+            if(newCard.Authorized(newCard) == true)
+            {
+
+                MessageBox.Show("Card Accepted");
+                printReciept();
+                finishOrder();
+            }
+            else
+            {
+                MessageBox.Show("Denied");
+                return;
+            }
+
+        }
+        private void useBankCheck(object sender, MouseEventArgs e)
+        {
+            Bank newCheck = new Bank(user.name, user.ID);
+            newCheck.amount = double.Parse(cost.Text);
+            if (newCheck.Authorized(newCheck) == true)
+            {
+                MessageBox.Show("Banked");
+                printReciept();
+                finishOrder();
+            }
+            else
+            {
+                MessageBox.Show("Check Bounced");
+                return;
+            }
+
+        }
+
+        // Opens and refreshes storepage
         private void returnToStore(object sender, MouseEventArgs e)
         {
             this.Close();
