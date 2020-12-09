@@ -150,7 +150,6 @@ namespace Amiezone
                 System.IO.File.WriteAllLines(filePath + ".txt", info);
 
                 // Copies image from path
-                MessageBox.Show(imagePath.Text, filePath + Path.GetExtension(imagePath.Text));
                 System.IO.File.Copy(imagePath.Text, filePath + Path.GetExtension(imagePath.Text));
 
 
@@ -173,7 +172,8 @@ namespace Amiezone
             OpenFileDialog imageSearch = new OpenFileDialog();
             imageSearch.ShowDialog();
             imageSearch.InitialDirectory = @"C:\";
-            imageSearch.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            //imageSearch.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            imageSearch.Filter = storeClasses.imageFilter;
 
             if (imageSearch.ShowDialog() == DialogResult.OK)
             {
@@ -182,7 +182,7 @@ namespace Amiezone
                 if (File.Exists(imagePath.Text) == false || isImage(Path.GetExtension(imagePath.Text)) == false)
                 {
                     MessageBox.Show(Path.GetExtension(imagePath.Text));
-                    MessageBox.Show("File does not exist or not a valid image format: (*.jpg, *.jpeg, *.jpe, *.jfif, *.png)");
+                    MessageBox.Show("File does not exist or not a valid image format: " + '(' + storeClasses.exts + ')');
                     string defaultPath = Path.Combine(storeClasses.generalFilePath, "Stores", "defaultImage.jpg");
                     picturePreview.Image = Image.FromFile(defaultPath);
                 }
@@ -196,8 +196,8 @@ namespace Amiezone
 
         private bool isImage(string extension)
         {
-            string[] exts = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
-            if(exts.Contains(extension.ToLower()) == true)
+            
+            if(storeClasses.exts.Contains(extension.ToLower()) == true)
             {
                 return true;
             }

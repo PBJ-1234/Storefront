@@ -49,7 +49,40 @@ namespace Amiezone
         public abstract class payment
         {
             public double amount;
+            public string filePath = Path.Combine(storeClasses.generalFilePath, "ReportsNReciepts", DateTime.Now.ToString("yyyy-MM-dd") + " Income") + ".txt";
+            public string[] info;
+            public void writePayments(string method, payment type)
+            {   
+                if(File.Exists(filePath) != true)
+                {
+                    StreamWriter report = File.AppendText(filePath);
+                    report.WriteLine("----------------------------");
+                    report.WriteLine("New Income Report: " + method);
+                    report.WriteLine(DateTime.Now.ToString("yyyy-MM-dd"));
+                    report.WriteLine("----------------------------");
+                    report.WriteLine("$" + type.amount.ToString());
+                    double total = type.amount;
+                    report.WriteLine("Final:\n" + total.ToString());
+                    report.Close();
+                }
+                else
+                {
+                    string lastLine = File.ReadLines(filePath).Last();
+                    StreamWriter report = File.AppendText(filePath);
+                    report.WriteLine("----------------------------");
+                    report.WriteLine("New Income Report: " + method);
+                    report.WriteLine(DateTime.Now.ToString("yyyy-MM-dd"));
+                    report.WriteLine("----------------------------");
+                    report.WriteLine("$" + type.amount.ToString());
+                    double total = double.Parse(lastLine);
+                    total = type.amount + total;
+                    report.WriteLine("Final:\n" + total.ToString());
+                    report.Close();
+                }
+
+            }
         }
+        // Check
         public class check : payment
         {
             public long RoutingNumber { get; set; }
@@ -57,7 +90,7 @@ namespace Amiezone
 
             public DateTime expDate;
 
-            public Boolean Authorized()
+            public Boolean Authorized(check daCheck)
             {
                 if (DateTime.Now > expDate)
                 {
@@ -65,6 +98,11 @@ namespace Amiezone
                 }
                 else
                 {
+                    if(daCheck.RoutingNumber % 2 == 1 || daCheck.AccountNumber % 2 == 1)
+                    {
+                        return false;
+                    }
+                    writePayments("Check", daCheck);
                     return true;
                 }
             }
@@ -80,13 +118,13 @@ namespace Amiezone
                 bankID = id;
             }
 
-            public Boolean authorized()
+            public Boolean authorized(bank daBank)
             {
                 if (bankID % 2 == 0)
                 {
+                    writePayments("Bank", daBank);
                     return true;
                 }
-
                 else
                 {
                     return false;
@@ -130,7 +168,6 @@ namespace Amiezone
             //Writes to file
             int index = 0;
             StreamWriter sw = File.AppendText(filePath);
-            MessageBox.Show("reached");
 
             sw.WriteLine("User " + user.name + "'s Order on: " + DateTime.Now.ToString("HH:MM:ss:ff"));
             sw.WriteLine("----------------------------------------------------------");
@@ -162,30 +199,10 @@ namespace Amiezone
         private void useBankCheck(object sender, MouseEventArgs e)
         {
             bank newCheck = new bank(user.name, user.ID);
-
-            // Checks that it isn't done
-            if (newCheck.authorized() == true)
+            newCheck.amount = double.Parse(cost.Text);
+            if (newCheck.authorized(newCheck) == true)
             {
                 MessageBox.Show("Banked");
-            }
-            else
-            {
-                MessageBox.Show("Bank account not valid");
-                return;
-            }
-            printReciept();
-            finishOrder();
-        }
-
-        private void useCreditCard(object sender, MouseEventArgs e)
-        {
-            check newCheck = new check();
-            newCheck.AccountNumber = user.ID;
-            newCheck.RoutingNumber = user.ID / 2;
-
-            if(newCheck.Authorized() == true)
-            {
-                MessageBox.Show("credited");
             }
             else
             {
@@ -196,18 +213,57 @@ namespace Amiezone
             finishOrder();
         }
 
+        private void useCreditCard(object sender, MouseEventArgs e)
+        {
+            check newCard = new check();
+            newCard.AccountNumber = user.ID;
+            newCard.RoutingNumber = user.ID / 2;
+            newCard.amount = double.Parse(cost.Text);
+            if(newCard.Authorized(newCard) == true)
+            {
+
+                MessageBox.Show("Card Accepted");
+            }
+            else
+            {
+                MessageBox.Show("Denied");
+                return;
+            }
+            printReciept();
+            finishOrder();
+        }
+
         private void useWallet(object sender, MouseEventArgs e)
         {
+            // Edit for getting just wallet line later
             if (user.wallet - double.Parse(cost.Text) >= 0)
             {
                 user.wallet = user.wallet - (double.Parse(cost.Text));
+
+                string projectPath = storeClasses.generalFilePath;
+                projectPath = Path.Combine(projectPath, "Users", user.name) + ".txt";
+                string[] info = System.IO.File.ReadAllLines(projectPath);
+
+                user.password = info[0];
+                user.ID = long.Parse(info[1]);
+                user.address = info[3];
+
+                //Rebuilds user file
+                File.Delete(projectPath);
+                StreamWriter create = File.CreateText(projectPath);
+
+                create.WriteLine(user.password);
+                create.WriteLine(user.ID);
+                create.WriteLine(user.wallet);
+                create.WriteLine(user.address);
+                create.Close();
+                prev.reinitalizeUser();
             }
             else
             {
                 MessageBox.Show("Insufficient Funds");
                 return;
             }
-            label1.Text = ("checked");
             printReciept();
             finishOrder();
         }

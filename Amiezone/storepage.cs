@@ -13,7 +13,7 @@ namespace Amiezone
 {
     public partial class storepage : Form
     {
-        User currentUser;
+        internal User currentUser;
         ShoppingCart currentCart;
         Storefront currentStores;
 
@@ -73,29 +73,9 @@ namespace Amiezone
         
         public void loadStores()
         {
-            // List version
-            /*
-            Storefront newFront = new Storefront();
-            StoreBox.Items.Clear();
-            string filePath = Path.Combine(storeClasses.generalFilePath, "Stores");
-            string[] directories = Directory.GetDirectories(filePath);
-            newFront.rebuildStores();
-            currentStores = newFront;
-            foreach (string x in directories)
-            {
-                StoreBox.Items.Add(Path.GetFileName(x));
-                string[] info = Directory.GetDirectories(x);
-                string categoryText = Path.GetFileNameWithoutExtension(info[0]);
-                if(CategoryBox.Items.Contains(categoryText) == false)
-                {
-                    CategoryBox.Items.Add(categoryText);
-                }
-            }
-            */
-
-            //Below is data grid view version
             Storefront dataFront = new Storefront();
             storeTable.Rows.Clear();
+
             string dataFilePath = Path.Combine(storeClasses.generalFilePath, "Stores");
             string[] dataDirectories = Directory.GetDirectories(dataFilePath);
             dataFront.rebuildStores();
@@ -113,28 +93,12 @@ namespace Amiezone
                 }
             }
         }
-        
 
         // Loads in store items
         
         private void reinitializeProducts(object sender, EventArgs e)
         {
-            /*
-            if(StoreBox.SelectedItem == null)
-            {
-                return;
-            }
 
-            ItemBox.Items.Clear();
-            storeNameLable.Text = StoreBox.SelectedItem.ToString();
-
-            string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", StoreBox.SelectedItem.ToString());
-            foreach (string itemFile in Directory.EnumerateFiles(filePath, "*.txt"))
-            {
-                string contents = Path.GetFileNameWithoutExtension(itemFile).ToString();
-                ItemBox.Items.Add(contents);
-            }
-            */
         }
         
         
@@ -163,12 +127,11 @@ namespace Amiezone
         private void loadNewPic(PictureBox pic, string filename)
         {
             // get into the Stores dir, selectedStore, and then get the image file
-            string[] exts = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
             string store = storeNameLable.Text;
             string finalPath = Path.Combine(storeClasses.generalFilePath, "Stores");
             finalPath = Path.Combine(finalPath, store);
             finalPath = Path.Combine(finalPath, Path.GetFileName(filename));
-            foreach(string x in exts)
+            foreach(string x in storeClasses.exts)
             {
                 if (File.Exists(finalPath + x) == true)
                 {
@@ -187,28 +150,7 @@ namespace Amiezone
         
         private void loadItem(object sender, EventArgs e)
         {
-            /*
-            // When user clicks will read file associated with item
-            // File picture will be same name but with the extension difference
 
-            if(ItemBox.SelectedItem == null)
-            {
-                return;
-            }
-
-            string x = StoreBox.SelectedItem.ToString();
-            string y = ItemBox.SelectedItem.ToString();
-            Item addedItem = Item.getItem(x, y);
-
-            descriptionBox.Text = addedItem.name + " \n";
-            descriptionBox.Text += String.Format("(Product ID: {0})\n", addedItem.productID);
-            descriptionBox.Text += String.Format("------------------------------\n");
-            descriptionBox.Text += String.Format("Description: {0}\n\n", addedItem.description);
-            descriptionBox.Text += String.Format("Cost: ${0}", addedItem.cost);
-
-            string imagePath = addedItem.name;
-            loadNewPic(itemPicture, imagePath);
-            */
         }
 
         private void dataLoadItem(object sender, DataGridViewCellEventArgs e)
@@ -238,30 +180,7 @@ namespace Amiezone
         
         private void loadStore(object sender, MouseEventArgs e)
         {
-            /*
-            string folderPath;
-            string storeName;
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
-            folderDialog.ShowNewFolderButton = false;
-            folderDialog.SelectedPath = Path.Combine(storeClasses.generalFilePath, "Stores");
-            
-            // Second Condition checks if folder is in the project
-            if(folderDialog.ShowDialog() == DialogResult.OK && folderDialog.SelectedPath.Contains(storeClasses.generalFilePath))
-            {
-                // Clears item list
-                ItemBox.Items.Clear();
-                folderPath = folderDialog.SelectedPath;
 
-                storeName = Path.GetFileName(folderPath);
-                storeNameLable.Text = storeName;
-
-                foreach (string itemFile in Directory.EnumerateFiles(folderPath, "*txt"))
-                {
-                    string contents = itemFile.ToString();
-                    ItemBox.Items.Add(contents);
-                }
-            }
-*/
         }
         
         private void dataLoadStore(object sender, MouseEventArgs e)
@@ -302,50 +221,15 @@ namespace Amiezone
         /*
         private void orderItem(object sender, MouseEventArgs e)
         {
-            // User did select an item
-            if (ItemBox.SelectedItem != null)
-            {
-                string x = StoreBox.SelectedItem.ToString();
-                string y = ItemBox.SelectedItem.ToString();
-                Item addedItem = Item.getItem(x,y);
-                MessageBox.Show(storeNameLable.Text);
-
-                //Checks for item in Table
-                Boolean notFound = true;
-                foreach(DataGridViewRow currentRow in dataGridView1.Rows)
-                {
-                    if(currentRow == null || currentRow.Cells[0].Value == null)
-                    {
-                        MessageBox.Show(StoreBox.SelectedItem.ToString());
-                        currentRow.Cells[0].Value = addedItem.name;
-                        currentRow.Cells[1].Value = addedItem.cost;
-                        currentRow.Cells[2].Value = 1;
-                        currentRow.Cells[3].Value = "storeNameLable.Text";
-                        notFound = false;
-                    }
-                    else if ((string)currentRow.Cells[0].Value == addedItem.name)
-                    {
-                        // Casts Object->int
-                        int cellQuanity = (int)currentRow.Cells[2].Value;
-                        
-                        currentRow.Cells[2].Value = cellQuanity + 1;
-                        notFound = false;
-                    }
-                }
-                if (notFound == true)
-                {
-                    dataGridView1.Rows.Add(addedItem.name, addedItem.cost, 1);
-                }
-                double cost = double.Parse(totalSoFarLabel.Text) + addedItem.cost;
-                totalSoFarLabel.Text = cost.ToString(); 
-            }
+            
         }
         */
+
         //Data Grid
         private void dataOrderItem(object sender, MouseEventArgs e)
         {
             // User did select an item
-            if (itemTable.SelectedRows != null)
+            if (itemTable.SelectedRows != null && storeTable.SelectedRows != null)
             {
                 string x = storeNameLable.Text;
                 string y = itemTable.SelectedRows[0].Cells[0].Value.ToString();
@@ -392,7 +276,7 @@ namespace Amiezone
                 if(val > 1)
                 {
                     Item removeing = Item.getItem(cartTable.SelectedRows[0].Cells[3].Value.ToString(), cartTable.SelectedRows[0].Cells[0].Value.ToString());
-                    cartTable.SelectedRows[0].Cells[3].Value = val - 1;
+                    cartTable.SelectedRows[0].Cells[2].Value = val - 1;
                     currentCart.removeItem(removeing.productID);
 
                     double newValue = double.Parse(totalSoFarLabel.Text) - removeing.cost;

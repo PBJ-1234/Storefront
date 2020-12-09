@@ -136,7 +136,7 @@
             // 
             this.totalSoFarLabel.AutoSize = true;
             this.totalSoFarLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalSoFarLabel.Location = new System.Drawing.Point(599, 426);
+            this.totalSoFarLabel.Location = new System.Drawing.Point(596, 426);
             this.totalSoFarLabel.Name = "totalSoFarLabel";
             this.totalSoFarLabel.Size = new System.Drawing.Size(32, 16);
             this.totalSoFarLabel.TabIndex = 12;
@@ -216,9 +216,9 @@
             // 
             // removeItemButton
             // 
-            this.removeItemButton.Location = new System.Drawing.Point(679, 326);
+            this.removeItemButton.Location = new System.Drawing.Point(662, 326);
             this.removeItemButton.Name = "removeItemButton";
-            this.removeItemButton.Size = new System.Drawing.Size(49, 40);
+            this.removeItemButton.Size = new System.Drawing.Size(66, 40);
             this.removeItemButton.TabIndex = 17;
             this.removeItemButton.Text = "Remove Item";
             this.removeItemButton.UseVisualStyleBackColor = true;
@@ -246,9 +246,9 @@
             // 
             // removeRowButton
             // 
-            this.removeRowButton.Location = new System.Drawing.Point(748, 326);
+            this.removeRowButton.Location = new System.Drawing.Point(731, 326);
             this.removeRowButton.Name = "removeRowButton";
-            this.removeRowButton.Size = new System.Drawing.Size(49, 40);
+            this.removeRowButton.Size = new System.Drawing.Size(66, 40);
             this.removeRowButton.TabIndex = 20;
             this.removeRowButton.Text = "Remove Row";
             this.removeRowButton.UseVisualStyleBackColor = true;

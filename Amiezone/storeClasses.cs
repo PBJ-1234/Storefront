@@ -30,25 +30,29 @@ namespace Amiezone
     // Will need to adjust privacy of classes later
     public class storeClasses
     {
-        //Paths to Project\Amiezone\Amiezone
+        // Paths to Project\Amiezone\Amiezone
         public static string generalFilePath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+        // Image extensiosn allowed;
+        public static string[] exts = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
+        public static string imageFilter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
     }
-        // User and Cart
-        
+    // User and Cart
+
         public class User
         {
-            public string name;
-            public long ID;
-            public double wallet;
-            public string address;
-            public string password;
+            internal string name;
+            internal long ID;
+            internal double wallet;
+            internal string address;
+            internal string password;
 
             //return the file
-            private void viewAccountInfo()
+            private string[] viewAccountInfo()
             {
                 string userPath = Path.Combine(storeClasses.generalFilePath, "Users", name);
                 string[] info = System.IO.File.ReadAllLines(userPath);
-                MessageBox.Show(String.Format( info[0] + info[1] + info[2] + info[3] + info[4]));
+                return info;
             }
         }
 
@@ -88,7 +92,6 @@ namespace Amiezone
             public static Item getItem(string store, string name)
             {
                 string filePath = Path.Combine(storeClasses.generalFilePath, "Stores", store, name) + ".txt";
-                
                 string[] info = System.IO.File.ReadAllLines(filePath);
 
                 Item result = new Item();
@@ -149,7 +152,6 @@ namespace Amiezone
                     newStore.storeName = Path.GetFileName(x);
 
                     //May need to fix up problems with finding and reading file
-                    //might just read file for the category, seems inefficient
                     string storePath = Path.Combine(filePath, x);
                     string[] info = Directory.GetDirectories(storePath);
                     newStore.category = Path.GetFileNameWithoutExtension(info[0]);

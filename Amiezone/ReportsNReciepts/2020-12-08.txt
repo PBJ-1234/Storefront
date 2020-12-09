@@ -26,3 +26,246 @@ Item Description: vasdfasdf
 
 ----------------------------------------------------------
 Order Returned at: 14:12:59:57
+User saf's Order on: 15:12:07:82
+----------------------------------------------------------
+Item #1:
+Name: cra ID: 1607317455
+Quantity: 1
+Cost: 21.54
+Total Cost of Item: 21.54
+Item Description: vasdfasdf
+
+----------------------------------------------------------
+Order Returned at: 15:12:07:82
+User Sumg Gai's Order on: 16:12:44:32
+----------------------------------------------------------
+Item #1:
+Name: cra ID: 1607317455
+Quantity: 1
+Cost: 21.54
+Total Cost of Item: 21.54
+Item Description: vasdfasdf
+
+Item #2:
+Name: vc ID: 1607317905
+Quantity: 1
+Cost: 123
+Total Cost of Item: 123
+Item Description: bvxchfgheryt
+
+Item #3:
+Name: exists ID: 1607464517
+Quantity: 2
+Cost: 12.43
+Total Cost of Item: 24.86
+Item Description: This exists
+
+Item #4:
+Name: meh ID: 1607317767
+Quantity: 1
+Cost: 234.12
+Total Cost of Item: 234.12
+Item Description: asdfvasdf
+
+----------------------------------------------------------
+Order Returned at: 16:12:44:32
+User a's Order on: 16:12:07:78
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 4
+Cost: 12.43
+Total Cost of Item: 49.72
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 16:12:07:78
+User saf's Order on: 17:12:46:62
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 2
+Cost: 12.43
+Total Cost of Item: 24.86
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 17:12:46:62
+User saf's Order on: 17:12:19:91
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 3
+Cost: 12.43
+Total Cost of Item: 37.29
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 17:12:19:91
+User saf's Order on: 17:12:31:42
+----------------------------------------------------------
+Item #1:
+Name: meh ID: 1607317767
+Quantity: 3
+Cost: 234.12
+Total Cost of Item: 702.36
+Item Description: asdfvasdf
+
+----------------------------------------------------------
+Order Returned at: 17:12:31:42
+User saf's Order on: 17:12:45:91
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 2
+Cost: 12.43
+Total Cost of Item: 24.86
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 17:12:45:91
+User saf's Order on: 17:12:28:72
+----------------------------------------------------------
+Item #1:
+Name: asdf ID: 1607467120
+Quantity: 3
+Cost: 12
+Total Cost of Item: 36
+Item Description: sdfgsfgsdfgsdfgdsfg
+
+----------------------------------------------------------
+Order Returned at: 17:12:28:72
+User saf's Order on: 18:12:15:42
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 1
+Cost: 12.43
+Total Cost of Item: 12.43
+Item Description: This exists
+
+Item #2:
+Name: asdf ID: 1607467120
+Quantity: 4
+Cost: 12
+Total Cost of Item: 48
+Item Description: sdfgsfgsdfgsdfgdsfg
+
+----------------------------------------------------------
+Order Returned at: 18:12:15:42
+User saf's Order on: 18:12:36:51
+----------------------------------------------------------
+Item #1:
+Name: vc ID: 1607317905
+Quantity: 1
+Cost: 123
+Total Cost of Item: 123
+Item Description: bvxchfgheryt
+
+Item #2:
+Name: saf ID: 1606804509
+Quantity: 1
+Cost: 43.12
+Total Cost of Item: 43.12
+Item Description: asd
+
+----------------------------------------------------------
+Order Returned at: 18:12:36:51
+User saf's Order on: 18:12:54:65
+----------------------------------------------------------
+Item #1:
+Name: vc ID: 1607317905
+Quantity: 2
+Cost: 123
+Total Cost of Item: 246
+Item Description: bvxchfgheryt
+
+Item #2:
+Name: saf ID: 1606804509
+Quantity: 1
+Cost: 43.12
+Total Cost of Item: 43.12
+Item Description: asd
+
+----------------------------------------------------------
+Order Returned at: 18:12:54:65
+User saf's Order on: 18:12:20:87
+----------------------------------------------------------
+Item #1:
+Name: cra ID: 1607317455
+Quantity: 3
+Cost: 21.54
+Total Cost of Item: 64.62
+Item Description: vasdfasdf
+
+----------------------------------------------------------
+Order Returned at: 18:12:20:87
+User saf's Order on: 18:12:30:13
+----------------------------------------------------------
+Item #1:
+Name: saf ID: 1606804509
+Quantity: 1
+Cost: 43.12
+Total Cost of Item: 43.12
+Item Description: asd
+
+Item #2:
+Name: cra ID: 1607317455
+Quantity: 3
+Cost: 21.54
+Total Cost of Item: 64.62
+Item Description: vasdfasdf
+
+----------------------------------------------------------
+Order Returned at: 18:12:30:13
+User saf's Order on: 18:12:52:19
+----------------------------------------------------------
+Item #1:
+Name: asdf ID: 1607467120
+Quantity: 3
+Cost: 12
+Total Cost of Item: 36
+Item Description: sdfgsfgsdfgsdfgdsfg
+
+----------------------------------------------------------
+Order Returned at: 18:12:52:19
+User saf's Order on: 18:12:49:78
+----------------------------------------------------------
+Item #1:
+Name: asdf ID: 1607467120
+Quantity: 3
+Cost: 12
+Total Cost of Item: 36
+Item Description: sdfgsfgsdfgsdfgdsfg
+
+Item #2:
+Name: exists ID: 1607464517
+Quantity: 2
+Cost: 12.43
+Total Cost of Item: 24.86
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 18:12:49:78
+User saf's Order on: 18:12:55:78
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 3
+Cost: 12.43
+Total Cost of Item: 37.29
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 18:12:55:78
+User saf's Order on: 18:12:34:83
+----------------------------------------------------------
+Item #1:
+Name: exists ID: 1607464517
+Quantity: 3
+Cost: 12.43
+Total Cost of Item: 37.29
+Item Description: This exists
+
+----------------------------------------------------------
+Order Returned at: 18:12:34:83
